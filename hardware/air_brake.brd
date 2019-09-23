@@ -1967,19 +1967,19 @@ design rules under a new name.</description>
 <attribute name="NAME" x="-14.351" y="-59.182" size="1.778" layer="25" ratio="10" rot="R90"/>
 <attribute name="VALUE" x="-1.524" y="-59.309" size="1.778" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="C1" library="adafruit" library_urn="urn:adsk.eagle:library:420" package="C025-040X050" package3d_urn="urn:adsk.eagle:package:6240321/1" value="33uF" x="-22.86" y="-55.88" smashed="yes">
+<element name="C1" library="adafruit" library_urn="urn:adsk.eagle:library:420" package="C025-040X050" package3d_urn="urn:adsk.eagle:package:6240321/1" value=".22uF" x="-22.86" y="-55.88" smashed="yes">
 <attribute name="NAME" x="-25.146" y="-53.721" size="1.27" layer="25" ratio="10"/>
 <attribute name="VALUE" x="-25.146" y="-59.309" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="C2" library="adafruit" library_urn="urn:adsk.eagle:library:420" package="C025-040X050" package3d_urn="urn:adsk.eagle:package:6240321/1" value="33uF" x="-31.75" y="-55.88" smashed="yes">
+<element name="C2" library="adafruit" library_urn="urn:adsk.eagle:library:420" package="C025-040X050" package3d_urn="urn:adsk.eagle:package:6240321/1" value=".22uF" x="-31.75" y="-55.88" smashed="yes">
 <attribute name="NAME" x="-34.036" y="-53.721" size="1.27" layer="25" ratio="10"/>
 <attribute name="VALUE" x="-34.036" y="-59.309" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="C3" library="adafruit" library_urn="urn:adsk.eagle:library:420" package="C025-040X050" package3d_urn="urn:adsk.eagle:package:6240321/1" value="33uF" x="-40.64" y="-55.88" smashed="yes">
+<element name="C3" library="adafruit" library_urn="urn:adsk.eagle:library:420" package="C025-040X050" package3d_urn="urn:adsk.eagle:package:6240321/1" value=".22uF" x="-40.64" y="-55.88" smashed="yes">
 <attribute name="NAME" x="-42.926" y="-53.721" size="1.27" layer="25" ratio="10"/>
 <attribute name="VALUE" x="-42.926" y="-59.309" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="C4" library="adafruit" library_urn="urn:adsk.eagle:library:420" package="C025-040X050" package3d_urn="urn:adsk.eagle:package:6240321/1" value="33uF" x="-49.53" y="-55.88" smashed="yes">
+<element name="C4" library="adafruit" library_urn="urn:adsk.eagle:library:420" package="C025-040X050" package3d_urn="urn:adsk.eagle:package:6240321/1" value=".22uF" x="-49.53" y="-55.88" smashed="yes">
 <attribute name="NAME" x="-51.816" y="-53.721" size="1.27" layer="25" ratio="10"/>
 <attribute name="VALUE" x="-51.816" y="-59.309" size="1.27" layer="27" ratio="10"/>
 </element>
