@@ -10762,12 +10762,13 @@ NASA Student Launch
 <segment>
 <pinref part="R2" gate="G$1" pin="1"/>
 <pinref part="R1" gate="G$1" pin="1"/>
-<wire x1="43.18" y1="128.27" x2="43.18" y2="130.81" width="0.1524" layer="91" grouprefs="BATTERY_VOLTAGE"/>
-<pinref part="TEENSY4.0" gate="G$1" pin="3/PWM"/>
-<wire x1="111.76" y1="104.14" x2="107.95" y2="104.14" width="0.1524" layer="91"/>
-<wire x1="107.95" y1="104.14" x2="107.95" y2="130.81" width="0.1524" layer="91"/>
-<wire x1="107.95" y1="130.81" x2="43.18" y2="130.81" width="0.1524" layer="91"/>
-<junction x="43.18" y="130.81"/>
+<wire x1="43.18" y1="128.27" x2="43.18" y2="129.54" width="0.1524" layer="91" grouprefs="BATTERY_VOLTAGE"/>
+<pinref part="TEENSY4.0" gate="G$1" pin="11/MOSI"/>
+<wire x1="43.18" y1="129.54" x2="43.18" y2="130.81" width="0.1524" layer="91" grouprefs="BATTERY_VOLTAGE"/>
+<wire x1="111.76" y1="83.82" x2="88.9" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="88.9" y1="83.82" x2="88.9" y2="129.54" width="0.1524" layer="91"/>
+<wire x1="88.9" y1="129.54" x2="43.18" y2="129.54" width="0.1524" layer="91"/>
+<junction x="43.18" y="129.54"/>
 </segment>
 </net>
 <net name="N$2" class="0">
