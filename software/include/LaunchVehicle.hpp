@@ -2,6 +2,8 @@
 #define __LaunchVehicle_HPP__
 
 #include "constants.hpp"
+#include "IMU.hpp"
+#include "Altimeter.hpp"
 
 
 class LaunchVehicle
@@ -107,6 +109,11 @@ class LaunchVehicle
          * @return percent absolutely air brake deployment (0 to 100 inclusive).
          *****************************************************************************************/
         int calculateDeploymentAction();
+
+    private:
+
+        IMU imu;
+        Altimeter altimeter;
 };
 
 #endif // __LaunchVehicle_HPP__

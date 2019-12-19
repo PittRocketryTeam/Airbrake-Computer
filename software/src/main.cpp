@@ -27,6 +27,7 @@ void loop()
             {
                 state = LAUNCH_DETECTED;
             }
+
             break;
         
         case LAUNCH_DETECTED:
@@ -35,6 +36,7 @@ void loop()
             {
                 state = BURNOUT_DETECTED;
             }
+
             break;
 
         case BURNOUT_DETECTED:
@@ -43,6 +45,7 @@ void loop()
             {
                 state = DAQ_THRESHOLD_MET_ACTIVE_ADJUST;
             }
+
             break;
         
         case DAQ_THRESHOLD_MET_ACTIVE_ADJUST:
@@ -51,6 +54,7 @@ void loop()
             if (vehicle.descentDetected())
             {
                 state = DESCENT_DETECTED;
+
                 break;
             }
 
@@ -60,32 +64,30 @@ void loop()
                 airbrake.deployCompletely();        // Deploy air brake completely
                 while (!vehicle.descentDetected()); // Wait until descent is detected
                 state = DESCENT_DETECTED;           // Switch to descent detected state
+
                 break;
             }
 
             // Otherwise, proceed with fine adjustment algorithm
-            int within_range;            
-            within_range = vehicle.withinPartialDeploymentRange();
-            
-            if (within_range > 0) // Predicted apogee is greater than target apogee
+            if (vehicle.withinPartialDeploymentRange() > 0) // Predicted apogee > target apogee
             {
-                // Calculate air brake deployment action
-                int percent_deployment = vehicle.calculateDeploymentAction();
-
-                // Deploy percent air brake based on deployment action
-                airbrake.setAbsoluteDeployment(percent_deployment);
+                int percent_deployment = vehicle.calculateDeploymentAction(); // Calculate action
+                airbrake.setAbsoluteDeployment(percent_deployment); // Deploy percent air brake 
             }
+
             break;
 
         case DESCENT_DETECTED:
 
             airbrake.retractCompletely(); // Retract to 0%
             state = TERMINATION;          // Terminate
+
             break;
 
         case TERMINATION:
 
             while (true); // Busy wait
+            
             break;
 
         default:
