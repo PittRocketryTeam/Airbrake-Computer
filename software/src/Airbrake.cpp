@@ -19,14 +19,12 @@ void Airbrake::setAbsoluteDeployment(int percent)
 
 void Airbrake::deployCompletely()
 {
-    // TODO: Implement
-
+    setAbsoluteDeployment(100);
 }
 
 void Airbrake::retractCompletely()
 {
-    // TODO: Implement
-
+    setAbsoluteDeployment(0);
 }
 
 int Airbrake::getDeploymentPercentage()

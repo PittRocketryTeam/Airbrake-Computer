@@ -23,7 +23,6 @@
  *************************************************************************************************/ 
 #define ALT_CALIBRATION_OFFSET 2
 
-
 /**************************************************************************************************
  * Lower bound of partial deployment range.                                             Unit: feet
  *************************************************************************************************/
@@ -32,7 +31,17 @@
 /**************************************************************************************************
  * Upper bound of partial deployment range.                                             Unit: feet
  *************************************************************************************************/
-#define PARTIAL_DEPLOYMENT_UPPER_BOUND (TARGET_APOGEE - PARTIAL_DEPLOYMENT_RANGE)
+#define PARTIAL_DEPLOYMENT_UPPER_BOUND (TARGET_APOGEE + PARTIAL_DEPLOYMENT_RANGE)
+
+/**************************************************************************************************
+ * Lower bound of immediate deployment range.                                           Unit: feet
+ *************************************************************************************************/
+#define IMMEDIATE_DEPLOYMENT_LOWER_BOUND (TARGET_APOGEE - IMMEDIATE_DEPLOYMENT_RANGE)
+
+/**************************************************************************************************
+ * Upper bound of immediate deployment range.                                           Unit: feet
+ *************************************************************************************************/
+#define IMMEDIATE_DEPLOYMENT_UPPER_BOUND (TARGET_APOGEE + IMMEDIATE_DEPLOYMENT_RANGE)
 
 /************************************************************************************************** 
  * Height of air brake blades when 100% deployed.                                     Unit: inches

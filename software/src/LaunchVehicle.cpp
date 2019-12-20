@@ -10,6 +10,17 @@ LaunchVehicle::~LaunchVehicle()
 
 }
 
+void LaunchVehicle::init(IMU i, Altimeter a)
+{
+    imu = i;
+    altimeter = a;
+
+    altimeter.init();
+    altimeter.setBaselinePressure();
+
+    imu.init();
+}
+
 bool LaunchVehicle::launchDetected()
 {
     // TODO: Implement
@@ -33,9 +44,18 @@ bool LaunchVehicle::daqThresholdMet()
 
 bool LaunchVehicle::isWithinImmediateDeployment()
 {
-    // TODO: Implement
+    bool ret = false;
 
-    return false;
+    Data data = imu.poll(data);
+    float current_altitude = data.altimeterData.altitude;
+
+    if ((current_altitude >= IMMEDIATE_DEPLOYMENT_LOWER_BOUND) && 
+        (current_altitude <= IMMEDIATE_DEPLOYMENT_UPPER_BOUND))
+    {
+        ret = true;
+    }
+    
+    return ret;
 }
 
 bool LaunchVehicle::descentDetected()
@@ -54,14 +74,25 @@ long LaunchVehicle::predictApogee()
 
 int LaunchVehicle::withinPartialDeploymentRange()
 {
+    int ret = -1; // Bias toward no action
+
     float predicted_apogee = predictApogee();
 
     if (predicted_apogee < PARTIAL_DEPLOYMENT_LOWER_BOUND)
-        return -1;
-    else if (predicted_apogee > PARTIAL_DEPLOYMENT_UPPER_BOUND)
-        return 1;
+    {
+        ret = -1;
+    }
+    else if (predicted_apogee > PARTIAL_DEPLOYMENT_UPPER_BOUND) 
+    {
+        ret = 1;
+    }
+    else if ((predicted_apogee >= PARTIAL_DEPLOYMENT_LOWER_BOUND) && 
+             (predicted_apogee <= PARTIAL_DEPLOYMENT_UPPER_BOUND))
+    {
+        ret = 0;
+    }
 
-    return 0;
+    return ret;
 }
 
 int LaunchVehicle::calculateDeploymentAction()

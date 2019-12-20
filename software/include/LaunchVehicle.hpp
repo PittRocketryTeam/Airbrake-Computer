@@ -12,6 +12,15 @@ class LaunchVehicle
 
         LaunchVehicle();
         ~LaunchVehicle();
+
+        /******************************************************************************************
+         * Initialize vehicle and sensors. Accepts an IMU and Altimeter objects so these sensors
+         * can be mocked.
+         * 
+         * @param IMU imu object (or mock)
+         * @param Altimeter altimeter object (or mock)
+         *****************************************************************************************/
+        void init(IMU i, Altimeter a);
         
         /******************************************************************************************
          * SA-1: Launch Detection Sub-Algorithm
