@@ -7,10 +7,11 @@
 #include <utility/imumaths.h>
 #include "Data.hpp"
 #include "board.hpp"
+#include "Sensor.hpp"
 
 #define IMU_DIMENIONS 3
 
-class IMU
+class IMU : public Sensor
 {
     private:
         Adafruit_BNO055 sensor;
@@ -18,6 +19,8 @@ class IMU
         bool verbose;
         //Data *last_data;
         Data last_data;
+
+    protected:
 
         float ax, ay, az;
         float ox, oy, oz;
@@ -30,12 +33,12 @@ class IMU
         IMU(bool);
         ~IMU();
 
-        bool init();
-        Data poll(Data);
-        Data read(Data);
+        virtual bool init();
+        virtual Data poll(Data);
+        virtual Data read(Data);
 
-        void enable();
-        void disable();
+        virtual void enable();
+        virtual void disable();
 };
 
 #endif

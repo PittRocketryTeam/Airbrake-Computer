@@ -1,13 +1,12 @@
 #include <Arduino.h>
+
 #include "Airbrake_State.hpp"
 #include "LaunchVehicle.hpp"
 #include "Airbrake.hpp"
-#include "IMU.hpp"
-#include "Altimeter.hpp"
-#include "MockImu.cpp"
+#include "SdFat.h"
 
 // Testing flag; set to true when testing, false for automatic mode
-#define MANUAL_MODE false
+#define MANUAL_MODE true
 
 LaunchVehicle vehicle;
 Airbrake airbrake;
@@ -15,13 +14,30 @@ Airbrake_State state;
 
 void setup() 
 {
+
     Serial.begin(9600);
 
     state = START;
     
-    MockImu imu;
-    Altimeter altimeter;
-    vehicle.init(imu, altimeter);
+    if (MANUAL_MODE)
+    {
+        // Path of the logfile to use, loaded on the SD card
+        char* logfile = (char*)"test/data/lessdata.csv";
+
+        // Mock sensors (comment out for flight)
+        MockImu imu(logfile);
+        MockAltimeter altimeter(logfile);
+
+        vehicle.init(imu, altimeter);
+    }
+    else
+    {
+        // Real sensors (comment out for testing)
+        IMU imu;
+        Altimeter altimeter;
+
+        vehicle.init(imu, altimeter);
+    }    
 }
 
 void loop() 
