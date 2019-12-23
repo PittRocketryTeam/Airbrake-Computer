@@ -2,10 +2,7 @@
 #define __MOCKIMU_HPP__
 
 #include "IMU.hpp"
-#include <stdio.h>
-#include <SPI.h>
-#include "SdFat.h"
-#include "sdios.h"
+#include "MockHelper.cpp"
 
 #define BUILTIN_SDCARD 254
 
@@ -16,17 +13,10 @@ class MockImu : public IMU
 {
     private:
 
-        SdFat SD;
-
-        static const int rows = 208501;
-        int data_index = 0;
-        char* filename;
-
-        Data mocked_data[rows];
+        MockHelper mockHelper;
 
     public:
 
-        MockImu();
         MockImu(char* data_file_path);
 
         virtual ~MockImu();
