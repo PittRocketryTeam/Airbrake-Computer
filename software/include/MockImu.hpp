@@ -1,33 +1,33 @@
 #ifndef __MOCKIMU_HPP__
 #define __MOCKIMU_HPP__
 
-#include "IMU.hpp"
-#include "MockHelper.cpp"
-
-#define BUILTIN_SDCARD 254
+// #include "IMU.hpp"
+#include "AbstractImu.hpp"
+#include "MockHelper.Hpp"
 
 /**************************************************************************************************
  * Mocked IMU class. Uses a csv file of data to "read" data, simulating raw data input from IMU.
  *************************************************************************************************/
-class MockImu : public IMU
+class MockImu : public AbstractImu
 {
-    private:
+    // private:
 
-        MockHelper mockHelper;
+        // MockHelper mockHelper;
 
     public:
 
+        MockImu();
         MockImu(char* data_file_path);
 
         virtual ~MockImu();
 
-        bool init();
+        virtual bool init() override;
 
-        Data read(Data data);
-        Data poll(Data data);
+        virtual Data read(Data data) override;
+        virtual Data poll(Data data) override;
 
-        void enable();
-        void disable();
+        virtual void enable() override;
+        virtual void disable() override;
 };
 
 #endif // __MOCKIMU_HPP__

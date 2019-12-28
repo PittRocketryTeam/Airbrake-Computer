@@ -5,166 +5,170 @@
 #include "Airbrake.hpp"
 #include "SdFat.h"
 
-// Testing flag; set to true when testing, false for automatic mode
-#define MANUAL_MODE true
-
 LaunchVehicle vehicle;
 Airbrake airbrake;
 Airbrake_State state;
 
 void setup() 
 {
+    delay(10000);    // Wait before starting anything
 
-    Serial.begin(9600);
+    Serial.println("In setup");
 
     state = START;
-    
+
     if (MANUAL_MODE)
     {
+        Serial.println("MANUAL");
+        
         // Path of the logfile to use, loaded on the SD card
-        char* logfile = (char*)"test/data/lessdata.csv";
+        char* logfile = (char*)"lessdata.csv";
 
         // Mock sensors (comment out for flight)
         MockImu imu(logfile);
         MockAltimeter altimeter(logfile);
 
-        vehicle.init(imu, altimeter);
+        vehicle.init(&imu, &altimeter);
     }
     else
     {
+        Serial.println("AUTOMATIC");
+
         // Real sensors (comment out for testing)
         IMU imu;
         Altimeter altimeter;
 
-        vehicle.init(imu, altimeter);
+        vehicle.init(&imu, &altimeter);
     }    
 }
 
 void loop() 
 {
-    switch (state)
-    {
-        case START:
+    Serial.println("In loop");
+    delay(1000);
+    // switch (state)
+    // {
+    //     case START:
 
-            Serial.println("State: START");
+    //         Serial.println("State: START");
             
-            if (MANUAL_MODE)
-            {
-                Serial.println("Enter 'c' to skip to LAUNCH_DETECTED state or 'w' to wait " 
-                               "for launch to be detected");
-                while (Serial.available() == 0) { }
-                if (Serial.readString() == 'c') state = LAUNCH_DETECTED;
-                else break;
-            }
+    //         if (MANUAL_MODE)
+    //         {
+    //             Serial.println("Enter 'c' to skip to LAUNCH_DETECTED state or 'w' to wait " 
+    //                            "for launch to be detected");
+    //             while (Serial.available() == 0) { }
+    //             if (Serial.readString() == 'c') state = LAUNCH_DETECTED;
+    //             else break;
+    //         }
 
-            if (vehicle.launchDetected())       // Check if launch has been detected 
-            {
-                state = LAUNCH_DETECTED;
-            }
+    //         if (vehicle.launchDetected())       // Check if launch has been detected 
+    //         {
+    //             state = LAUNCH_DETECTED;
+    //         }
 
-            break;
+    //         break;
         
-        case LAUNCH_DETECTED:
+    //     case LAUNCH_DETECTED:
 
-            Serial.println("State: LAUNCH_DETECTED");
+    //         Serial.println("State: LAUNCH_DETECTED");
 
-            if (MANUAL_MODE)
-            {
-                Serial.println("Enter 'c' to skip to BURNOUT_DETECTED state or 'w' to wait " 
-                               "for burnout to be detected");
-                while (Serial.available() == 0) { }
-                if (Serial.readString() == 'c') state = BURNOUT_DETECTED;
-                else break;
-            }
+    //         if (MANUAL_MODE)
+    //         {
+    //             Serial.println("Enter 'c' to skip to BURNOUT_DETECTED state or 'w' to wait " 
+    //                            "for burnout to be detected");
+    //             while (Serial.available() == 0) { }
+    //             if (Serial.readString() == 'c') state = BURNOUT_DETECTED;
+    //             else break;
+    //         }
 
-            if (vehicle.motorBurnoutDetected()) // Check if motor burnout has been detected
-            {
-                state = BURNOUT_DETECTED;
-            }
+    //         if (vehicle.motorBurnoutDetected()) // Check if motor burnout has been detected
+    //         {
+    //             state = BURNOUT_DETECTED;
+    //         }
 
-            break;
+    //         break;
 
-        case BURNOUT_DETECTED:
+    //     case BURNOUT_DETECTED:
 
-            Serial.println("State: BURNOUT_DETECTED");
+    //         Serial.println("State: BURNOUT_DETECTED");
 
-            if (MANUAL_MODE)
-            {
-                Serial.println("Enter 'c' to skip to DAQ_THRESHOLD_MET_ACTIVE_ADJUST state " 
-                               "or 'w' to wait for data acquisition threshold to be met");
-                while (Serial.available() == 0) { }
-                if (Serial.readString() == 'c') state = DAQ_THRESHOLD_MET_ACTIVE_ADJUST;
-                else break;
-            }
+    //         if (MANUAL_MODE)
+    //         {
+    //             Serial.println("Enter 'c' to skip to DAQ_THRESHOLD_MET_ACTIVE_ADJUST state " 
+    //                            "or 'w' to wait for data acquisition threshold to be met");
+    //             while (Serial.available() == 0) { }
+    //             if (Serial.readString() == 'c') state = DAQ_THRESHOLD_MET_ACTIVE_ADJUST;
+    //             else break;
+    //         }
             
-            if (vehicle.daqThresholdMet())     // Check if data acquisition threshold has been met
-            {
-                state = DAQ_THRESHOLD_MET_ACTIVE_ADJUST;
-            }
+    //         if (vehicle.daqThresholdMet())     // Check if data acquisition threshold has been met
+    //         {
+    //             state = DAQ_THRESHOLD_MET_ACTIVE_ADJUST;
+    //         }
 
-            break;
+    //         break;
         
-        case DAQ_THRESHOLD_MET_ACTIVE_ADJUST:
+    //     case DAQ_THRESHOLD_MET_ACTIVE_ADJUST:
 
-            Serial.println("State: DAQ_THRESHOLD_MET_ACTIVE_ADJUST");
+    //         Serial.println("State: DAQ_THRESHOLD_MET_ACTIVE_ADJUST");
 
-            if (MANUAL_MODE)
-            {
-                Serial.println("Enter 'c' to skip to DESCENT_DETECTED state or 'w' to wait");
-                while (Serial.available() == 0) { }
-                if (Serial.readString() == 'c') state = DAQ_THRESHOLD_MET_ACTIVE_ADJUST;
-                else break;
-            }
+    //         if (MANUAL_MODE)
+    //         {
+    //             Serial.println("Enter 'c' to skip to DESCENT_DETECTED state or 'w' to wait");
+    //             while (Serial.available() == 0) { }
+    //             if (Serial.readString() == 'c') state = DAQ_THRESHOLD_MET_ACTIVE_ADJUST;
+    //             else break;
+    //         }
             
-            // Move to descent state if descent has been detected
-            if (vehicle.descentDetected())
-            {
-                state = DESCENT_DETECTED;
+    //         // Move to descent state if descent has been detected
+    //         if (vehicle.descentDetected())
+    //         {
+    //             state = DESCENT_DETECTED;
 
-                break;
-            }
+    //             break;
+    //         }
 
-            // Check if vehicle is within range for immediate deployment
-            if (vehicle.isWithinImmediateDeployment())
-            {
-                airbrake.deployCompletely();        // Deploy air brake completely
-                while (!vehicle.descentDetected()); // Wait until descent is detected
-                state = DESCENT_DETECTED;           // Switch to descent detected state
+    //         // Check if vehicle is within range for immediate deployment
+    //         if (vehicle.isWithinImmediateDeployment())
+    //         {
+    //             airbrake.deployCompletely();        // Deploy air brake completely
+    //             while (!vehicle.descentDetected()); // Wait until descent is detected
+    //             state = DESCENT_DETECTED;           // Switch to descent detected state
 
-                break;
-            }
+    //             break;
+    //         }
 
-            // Otherwise, proceed with fine adjustment algorithm
-            if (vehicle.withinPartialDeploymentRange() > 0) // Predicted apogee > target apogee
-            {
-                int percent_deployment = vehicle.calculateDeploymentAction(); // Calculate action
-                airbrake.setAbsoluteDeployment(percent_deployment); // Deploy percent air brake 
-            }
+    //         // Otherwise, proceed with fine adjustment algorithm
+    //         if (vehicle.withinPartialDeploymentRange() > 0) // Predicted apogee > target apogee
+    //         {
+    //             int percent_deployment = vehicle.calculateDeploymentAction(); // Calculate action
+    //             airbrake.setAbsoluteDeployment(percent_deployment); // Deploy percent air brake 
+    //         }
 
-            break;
+    //         break;
 
-        case DESCENT_DETECTED:
+    //     case DESCENT_DETECTED:
 
-            Serial.println("State: DESCENT_DETECTED");
+    //         Serial.println("State: DESCENT_DETECTED");
 
-            airbrake.retractCompletely(); // Retract to 0%
-            state = TERMINATION;          // Terminate
+    //         airbrake.retractCompletely(); // Retract to 0%
+    //         state = TERMINATION;          // Terminate
 
-            break;
+    //         break;
 
-        case TERMINATION:
+    //     case TERMINATION:
 
-            Serial.println("State: TERMINATION");
+    //         Serial.println("State: TERMINATION");
 
-            while (true); // Busy wait
+    //         while (true); // Busy wait
             
-            break;
+    //         break;
 
-        default:
+    //     default:
 
-            // Should never be in this state. If so, retract to 0% and terminate to fail safely
-            state = DESCENT_DETECTED;
+    //         // Should never be in this state. If so, retract to 0% and terminate to fail safely
+    //         state = DESCENT_DETECTED;
 
-            break;
-    }
+    //         break;
+    // }
 }

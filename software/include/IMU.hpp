@@ -5,19 +5,18 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
-#include "Data.hpp"
+// #include "Data.hpp"
 #include "board.hpp"
-#include "Sensor.hpp"
+#include "AbstractImu.hpp"
 
 #define IMU_DIMENIONS 3
 
-class IMU : public Sensor
+class IMU : public AbstractImu
 {
     private:
         Adafruit_BNO055 sensor;
         sensors_event_t event;
         bool verbose;
-        //Data *last_data;
         Data last_data;
 
     protected:
@@ -31,14 +30,14 @@ class IMU : public Sensor
 
         IMU();
         IMU(bool);
-        ~IMU();
+        virtual ~IMU();
 
-        virtual bool init();
-        virtual Data poll(Data);
-        virtual Data read(Data);
+        virtual bool init() override;
+        virtual Data poll(Data) override;
+        virtual Data read(Data) override;
 
-        virtual void enable();
-        virtual void disable();
+        virtual void enable() override;
+        virtual void disable() override;
 };
 
 #endif

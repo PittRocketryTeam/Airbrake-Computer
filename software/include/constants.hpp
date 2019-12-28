@@ -1,3 +1,7 @@
+// #define LOGFILE (char*)"lessdata.csv"
+
+#define MANUAL_MODE false    // Testing flag; set to true when testing, false for automatic mode
+
 /**************************************************************************************************
  * I-1: Target apogee.                                                                  Unit: feet
  *************************************************************************************************/

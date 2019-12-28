@@ -1,21 +1,19 @@
 #ifndef __MOCKALTIMETER_HPP__
 #define __MOCKALTIMETER_HPP__
 
-#include "Altimeter.hpp"
-#include "MockHelper.cpp"
-
-#define BUILTIN_SDCARD 254
+#include "AbstractAltimeter.hpp"
+#include "MockHelper.hpp"
 
 /**************************************************************************************************
  * Mocked altimeter class. Uses a csv file of data to "read" data, simulating raw data input from
  * the altimeter.
  *************************************************************************************************/
-class MockAltimeter : public Altimeter
+class MockAltimeter : public AbstractAltimeter
 {
 
     private:
 
-        MockHelper mockHelper;
+        // MockHelper mockHelper;
         float temperature, pressure, altitude;
 
     public:
@@ -24,15 +22,15 @@ class MockAltimeter : public Altimeter
 
         virtual ~MockAltimeter();
 
-        bool init();
+        virtual bool init() override;
 
-        Data read(Data data);
-        Data poll(Data data);
+        virtual Data read(Data data) override;
+        virtual Data poll(Data data) override;
 
-        void enable();
-        void disable();
+        virtual void enable() override;
+        virtual void disable() override;
 
-        void setBaselinePressure();
+        virtual void setBaselinePressure() override;
 };
 
 #endif // __MOCKALTIMETER_HPP__

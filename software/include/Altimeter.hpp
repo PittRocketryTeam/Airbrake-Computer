@@ -5,20 +5,25 @@
 #include "Data.hpp"
 #include "Adafruit_BMP3XX.h"
 #include "bmp3.h"
+#include "AbstractAltimeter.hpp"
 
-class Altimeter
+class Altimeter : public AbstractAltimeter
 {
     public:
 
         Altimeter();
-        ~Altimeter();
+
+        virtual ~Altimeter();
         
-        virtual bool init();
-        Data read(Data data);
-        Data poll(Data data);
-        void enable();
-        void disable();
-        void setBaselinePressure();
+        virtual bool init() override;
+
+        virtual Data read(Data data) override;
+        virtual Data poll(Data data) override;
+
+        virtual void enable() override;
+        virtual void disable() override;
+        
+        virtual void setBaselinePressure() override;
 };
 
 #endif
