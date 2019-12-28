@@ -13,7 +13,7 @@ class MockAltimeter : public AbstractAltimeter
 
     private:
 
-        // MockHelper mockHelper;
+        MockHelper mockHelper;
         float temperature, pressure, altitude;
 
     public:

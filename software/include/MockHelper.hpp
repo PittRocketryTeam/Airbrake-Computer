@@ -24,13 +24,13 @@ class MockHelper
 
     private:
 
-        static const int k_rows = 208501;
-        int data_index;
+        // static const int k_rows = 208501;
+        // int data_index;
 
-        char* filename;
+        // char* filename;
 
-        Data mocked_data[k_rows];
-        SdFat SD;
+        // Data mocked_data[k_rows];
+        // SdFat SD;
 };
 
 #endif   // __MOCK_HELPER_HPP__

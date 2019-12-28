@@ -10,9 +10,9 @@
  *************************************************************************************************/
 class MockImu : public AbstractImu
 {
-    // private:
+    private:
 
-        // MockHelper mockHelper;
+        MockHelper mockHelper;
 
     public:
 

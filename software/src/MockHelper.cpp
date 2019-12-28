@@ -3,9 +3,9 @@
 
 MockHelper::MockHelper() { }
 
-MockHelper::MockHelper(char* data_filename) :
-    data_index(0),
-    filename(data_filename)
+MockHelper::MockHelper(char* data_filename) //:
+    // data_index(0),
+    // filename(data_filename)
 { }
 
 MockHelper::~MockHelper() { }
