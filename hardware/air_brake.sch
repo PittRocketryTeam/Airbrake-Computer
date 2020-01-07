@@ -11339,6 +11339,92 @@ DIN A4, landscape with location and doc. field</description>
 </deviceset>
 </devicesets>
 </library>
+<library name="adafruit">
+<packages>
+<package name="AL60P">
+<description>&lt;b&gt;SPEAKER&lt;/b&gt;</description>
+<circle x="0" y="0" radius="6.096" width="0.1524" layer="21"/>
+<circle x="0" y="0" radius="1.27" width="0.1524" layer="21"/>
+<pad name="1" x="-3.7592" y="0" drill="1.016" diameter="2.54" shape="octagon"/>
+<pad name="2" x="3.7592" y="0" drill="1.016" diameter="2.54" shape="octagon"/>
+<text x="-2.54" y="6.35" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="-3.8862" y="-3.81" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+</package>
+<package name="AL11P">
+<description>&lt;b&gt;SPEAKER&lt;/b&gt;</description>
+<circle x="0" y="0" radius="5.715" width="0.1524" layer="21"/>
+<circle x="0" y="0" radius="6.223" width="0.1524" layer="21"/>
+<circle x="0" y="0" radius="1.016" width="0.1524" layer="21"/>
+<pad name="-" x="-2.286" y="0" drill="1.016" diameter="1.905" shape="octagon"/>
+<pad name="+" x="2.286" y="0" drill="1.016" diameter="1.905" shape="octagon"/>
+<text x="-3.175" y="6.35" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="-3.81" y="-3.175" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+</package>
+<package name="PS12">
+<circle x="0" y="0" radius="6.096" width="0.1524" layer="21"/>
+<pad name="P$1" x="-2.5" y="0" drill="1" diameter="2.54"/>
+<pad name="P$2" x="2.5" y="0" drill="1" diameter="2.54"/>
+<text x="-2.54" y="6.35" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="-3.8862" y="-3.81" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+</package>
+</packages>
+<symbols>
+<symbol name="SP">
+<wire x1="-1.905" y1="-0.635" x2="1.905" y2="-0.635" width="0.254" layer="94"/>
+<wire x1="1.905" y1="-0.635" x2="1.905" y2="0" width="0.254" layer="94"/>
+<wire x1="1.905" y1="2.54" x2="-1.905" y2="2.54" width="0.254" layer="94"/>
+<wire x1="-1.905" y1="-0.635" x2="-1.905" y2="0" width="0.254" layer="94"/>
+<wire x1="1.905" y1="2.54" x2="5.08" y2="5.08" width="0.254" layer="94"/>
+<wire x1="5.08" y1="5.08" x2="-5.08" y2="5.08" width="0.254" layer="94"/>
+<wire x1="-1.905" y1="2.54" x2="-5.08" y2="5.08" width="0.254" layer="94"/>
+<wire x1="2.54" y1="0" x2="1.905" y2="0" width="0.1524" layer="94"/>
+<wire x1="1.905" y1="0" x2="1.905" y2="2.54" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="0" x2="-1.905" y2="0" width="0.1524" layer="94"/>
+<wire x1="-1.905" y1="0" x2="-1.905" y2="2.54" width="0.254" layer="94"/>
+<text x="-3.81" y="6.35" size="1.778" layer="95">&gt;NAME</text>
+<text x="-3.81" y="-3.175" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="-" x="5.08" y="0" visible="off" length="short" direction="pas" rot="R180"/>
+<pin name="+" x="-5.08" y="0" visible="off" length="short" direction="pas"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="SPEAKER" prefix="SP">
+<description>&lt;b&gt;SPEAKER&lt;/b&gt;&lt;p&gt; Source: Buerklin&lt;p&gt;Added PS12 (for part # PS1240 piezo) &lt;p&gt;http://www.ladyada.net/library/pcb/eaglelibrary.html&lt;p&gt;</description>
+<gates>
+<gate name="S1" symbol="SP" x="0" y="0"/>
+</gates>
+<devices>
+<device name="/AL60P" package="AL60P">
+<connects>
+<connect gate="S1" pin="+" pad="1"/>
+<connect gate="S1" pin="-" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="/AL11P" package="AL11P">
+<connects>
+<connect gate="S1" pin="+" pad="+"/>
+<connect gate="S1" pin="-" pad="-"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="/PS12" package="PS12">
+<connects>
+<connect gate="S1" pin="+" pad="P$1"/>
+<connect gate="S1" pin="-" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -11404,6 +11490,7 @@ DIN A4, landscape with location and doc. field</description>
 <part name="U$14" library="Teensy356" deviceset="TEENSY_3.5/3.6" device=""/>
 <part name="+3V4" library="supply1" deviceset="+3V3" device=""/>
 <part name="U$15" library="microbuilder" deviceset="GND" device=""/>
+<part name="SP1" library="adafruit" deviceset="SPEAKER" device="/PS12"/>
 </parts>
 <sheets>
 <sheet>
@@ -11555,6 +11642,10 @@ NASA Student Launch
 <instance part="U$15" gate="G$1" x="99.06" y="85.09" smashed="yes" grouprefs="TEENSY3.6">
 <attribute name="VALUE" x="100.076" y="86.36" size="1.27" layer="96"/>
 </instance>
+<instance part="SP1" gate="S1" x="99.06" y="116.84" smashed="yes" rot="R270">
+<attribute name="NAME" x="105.41" y="120.65" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="95.885" y="120.65" size="1.778" layer="96" rot="R270"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -11628,14 +11719,13 @@ NASA Student Launch
 <junction x="231.14" y="39.37" grouprefs="POWER"/>
 </segment>
 <segment>
-<pinref part="U$14" gate="G$1" pin="AGND"/>
-<wire x1="71.12" y1="134.62" x2="99.06" y2="134.62" width="0.1524" layer="91" grouprefs="TEENSY3.6"/>
-<wire x1="99.06" y1="134.62" x2="99.06" y2="101.6" width="0.1524" layer="91" grouprefs="TEENSY3.6"/>
 <pinref part="U$14" gate="G$1" pin="GND2"/>
 <wire x1="99.06" y1="101.6" x2="99.06" y2="87.63" width="0.1524" layer="91" grouprefs="TEENSY3.6"/>
 <wire x1="71.12" y1="101.6" x2="99.06" y2="101.6" width="0.1524" layer="91" grouprefs="TEENSY3.6"/>
 <junction x="99.06" y="101.6" grouprefs="TEENSY3.6"/>
 <pinref part="U$15" gate="G$1" pin="GND"/>
+<wire x1="99.06" y1="111.76" x2="99.06" y2="101.6" width="0.1524" layer="91" grouprefs="TEENSY3.6"/>
+<pinref part="SP1" gate="S1" pin="-"/>
 </segment>
 </net>
 <net name="+3V3" class="0">
@@ -11768,7 +11858,7 @@ NASA Student Launch
 </segment>
 <segment>
 <pinref part="U$14" gate="G$1" pin="18/A4/SDA"/>
-<wire x1="71.12" y1="116.84" x2="76.2" y2="116.84" width="0.1524" layer="91" grouprefs="TEENSY3.6 TEENSY3.6"/>
+<wire x1="71.12" y1="116.84" x2="76.2" y2="116.84" width="0.1524" layer="91" grouprefs="TEENSY3.6"/>
 <label x="76.2" y="116.84" size="1.778" layer="95" grouprefs="TEENSY3.6"/>
 </segment>
 </net>
@@ -11785,7 +11875,7 @@ NASA Student Launch
 </segment>
 <segment>
 <pinref part="U$14" gate="G$1" pin="19/A5/SCL"/>
-<wire x1="71.12" y1="119.38" x2="76.2" y2="119.38" width="0.1524" layer="91" grouprefs="TEENSY3.6 TEENSY3.6"/>
+<wire x1="71.12" y1="119.38" x2="76.2" y2="119.38" width="0.1524" layer="91" grouprefs="TEENSY3.6"/>
 <label x="76.2" y="119.38" size="1.778" layer="95" grouprefs="TEENSY3.6"/>
 </segment>
 </net>
@@ -11844,7 +11934,7 @@ NASA Student Launch
 <net name="BATT_VSENSE" class="0">
 <segment>
 <pinref part="U$14" gate="G$1" pin="14/A0"/>
-<wire x1="71.12" y1="106.68" x2="76.2" y2="106.68" width="0.1524" layer="91" grouprefs="TEENSY3.6 TEENSY3.6"/>
+<wire x1="71.12" y1="106.68" x2="76.2" y2="106.68" width="0.1524" layer="91" grouprefs="TEENSY3.6"/>
 <label x="76.2" y="106.68" size="1.778" layer="95" grouprefs="TEENSY3.6"/>
 </segment>
 </net>
@@ -11909,8 +11999,12 @@ NASA Student Launch
 <net name="MD_PWM1" class="0">
 <segment>
 <pinref part="U$14" gate="G$1" pin="20/A6"/>
-<wire x1="71.12" y1="121.92" x2="76.2" y2="121.92" width="0.1524" layer="91" grouprefs="TEENSY3.6 TEENSY3.6"/>
-<label x="76.2" y="121.92" size="1.778" layer="95" grouprefs="TEENSY3.6"/>
+<label x="83.82" y="121.92" size="1.778" layer="95" grouprefs="TEENSY3.6"/>
+<wire x1="99.06" y1="134.62" x2="99.06" y2="121.92" width="0.1524" layer="91" grouprefs="TEENSY3.6"/>
+<pinref part="U$14" gate="G$1" pin="AGND"/>
+<wire x1="71.12" y1="134.62" x2="99.06" y2="134.62" width="0.1524" layer="91" grouprefs="TEENSY3.6"/>
+<pinref part="SP1" gate="S1" pin="+"/>
+<wire x1="71.12" y1="121.92" x2="99.06" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="MD_CS1" class="0">
