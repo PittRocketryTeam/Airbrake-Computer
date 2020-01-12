@@ -18,9 +18,7 @@ class IMU : public AbstractImu
         sensors_event_t event;
         bool verbose;
         Data last_data;
-
-    protected:
-
+        
         float ax, ay, az;
         float ox, oy, oz;
         imu::Vector<3> o;

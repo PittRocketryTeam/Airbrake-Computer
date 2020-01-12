@@ -18,7 +18,7 @@ class MockAltimeter : public AbstractAltimeter
 
     public:
         
-        MockAltimeter(char* data_file_path);
+        MockAltimeter(MockHelper helper);
 
         virtual ~MockAltimeter();
 

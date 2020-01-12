@@ -14,10 +14,12 @@ class MockImu : public AbstractImu
 
         MockHelper mockHelper;
 
+        float ax, ay, az;
+        float ox, oy, oz;
+
     public:
 
-        MockImu();
-        MockImu(char* data_file_path);
+        MockImu(MockHelper helper);
 
         virtual ~MockImu();
 

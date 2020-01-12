@@ -12,92 +12,102 @@ LaunchVehicle::~LaunchVehicle()
 
 void LaunchVehicle::init(AbstractImu* i, AbstractAltimeter* a)
 {
-    // imu = i;
-    // altimeter = a;
+    imu = i;
+    altimeter = a;
 
-    // altimeter.init();
-    // altimeter.setBaselinePressure();
+    altimeter->init();
+    altimeter->setBaselinePressure();
 
-    // imu->init();
+    imu->init();
+
+    if (VERBOSE) { Serial.println("Vehicle init complete"); }
 }
 
-// bool LaunchVehicle::launchDetected()
-// {
-//     // TODO: Implement
+bool LaunchVehicle::launchDetected()
+{
+    // TODO: Implement
 
-//     return false;
-// }
+    Data data;
 
-// bool LaunchVehicle::motorBurnoutDetected()
-// {
-//     // TODO: Implement
+    Serial.println("Polling imu");
+    data = imu->poll(data);
 
-//     return false;
-// }
+    // Serial.println("Polling altimeter");
+    // data = altimeter->poll(data);
 
-// bool LaunchVehicle::daqThresholdMet()
-// {
-//     // TODO: Implement
+    return false;
+}
 
-//     return false;
-// }
+bool LaunchVehicle::motorBurnoutDetected()
+{
+    // TODO: Implement
 
-// bool LaunchVehicle::isWithinImmediateDeployment()
-// {
-//     bool ret = false;
+    return false;
+}
 
-//     // Data data = imu->poll(data);
-//     // float current_altitude = data.altimeterData.altitude;
+bool LaunchVehicle::daqThresholdMet()
+{
+    // TODO: Implement
 
-//     // if ((current_altitude >= IMMEDIATE_DEPLOYMENT_LOWER_BOUND) && 
-//     //     (current_altitude <= IMMEDIATE_DEPLOYMENT_UPPER_BOUND))
-//     // {
-//     //     ret = true;
-//     // }
+    return false;
+}
+
+bool LaunchVehicle::isWithinImmediateDeployment()
+{
+    bool ret = false;
+
+    // Data data = imu->poll(data);
+    // float current_altitude = data.altimeterData.altitude;
+
+    // if ((current_altitude >= IMMEDIATE_DEPLOYMENT_LOWER_BOUND) && 
+    //     (current_altitude <= IMMEDIATE_DEPLOYMENT_UPPER_BOUND))
+    // {
+    //     ret = true;
+    // }
     
-//     return ret;
-// }
+    return ret;
+}
 
-// bool LaunchVehicle::descentDetected()
-// {
-//     // TODO: Implement
+bool LaunchVehicle::descentDetected()
+{
+    // TODO: Implement
 
-//     return false;
-// }
+    return false;
+}
 
-// long LaunchVehicle::predictApogee()
-// {
-//     // TODO: Implement
+long LaunchVehicle::predictApogee()
+{
+    // TODO: Implement
 
-//     return 0.0;
-// }
+    return 0.0;
+}
 
-// int LaunchVehicle::withinPartialDeploymentRange()
-// {
-//     int ret = -1; // Bias toward no action
+int LaunchVehicle::withinPartialDeploymentRange()
+{
+    int ret = -1; // Bias toward no action
 
-//     // float predicted_apogee = predictApogee();
+    // float predicted_apogee = predictApogee();
 
-//     // if (predicted_apogee < PARTIAL_DEPLOYMENT_LOWER_BOUND)
-//     // {
-//     //     ret = -1;
-//     // }
-//     // else if (predicted_apogee > PARTIAL_DEPLOYMENT_UPPER_BOUND) 
-//     // {
-//     //     ret = 1;
-//     // }
-//     // else if ((predicted_apogee >= PARTIAL_DEPLOYMENT_LOWER_BOUND) && 
-//     //          (predicted_apogee <= PARTIAL_DEPLOYMENT_UPPER_BOUND))
-//     // {
-//     //     ret = 0;
-//     // }
+    // if (predicted_apogee < PARTIAL_DEPLOYMENT_LOWER_BOUND)
+    // {
+    //     ret = -1;
+    // }
+    // else if (predicted_apogee > PARTIAL_DEPLOYMENT_UPPER_BOUND) 
+    // {
+    //     ret = 1;
+    // }
+    // else if ((predicted_apogee >= PARTIAL_DEPLOYMENT_LOWER_BOUND) && 
+    //          (predicted_apogee <= PARTIAL_DEPLOYMENT_UPPER_BOUND))
+    // {
+    //     ret = 0;
+    // }
 
-//     return ret;
-// }
+    return ret;
+}
 
-// int LaunchVehicle::calculateDeploymentAction()
-// {
-//     // TODO: Implement
+int LaunchVehicle::calculateDeploymentAction()
+{
+    // TODO: Implement
     
-//     return 0;
-// }
+    return 0;
+}

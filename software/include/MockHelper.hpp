@@ -7,6 +7,9 @@
 #include "sdios.h"
 #include "Data.hpp"
 
+#define k_rows 20000
+#define k_bytes_per_line 96
+
 #define BUILTIN_SDCARD 254
 
 class MockHelper
@@ -18,19 +21,21 @@ class MockHelper
 
         virtual ~MockHelper();
 
-        virtual bool readFromSD();
+        virtual void init();
 
         virtual Data getNextDataPoint(Data data);
 
     private:
 
-        // static const int k_rows = 208501;
-        // int data_index;
+        float temp, brightness;    // throwaway values to satisfy reads
 
-        // char* filename;
+        int file_index;            // Current index in file (in bytes)
 
-        // Data mocked_data[k_rows];
-        // SdFat SD;
+        char* filename;            // Name of data file
+
+        SdFat32 SD;                  // SD reader object
+
+        File32 file;
 };
 
 #endif   // __MOCK_HELPER_HPP__
