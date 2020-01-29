@@ -31,6 +31,8 @@ class LaunchVehicle
         /******************************************************************************************
          * SA-1: Launch Detection Sub-Algorithm
          * 
+         * Author(s): Matt Wildermuth & Daniel Stumpp
+         * 
          * Determines whether or not launch has been detected. A launch is defined as an event in 
          * which the vehicle's motor ignites and the vehicle leaves the launch rail at a speed of 
          * at least 52 feet per second.
@@ -42,6 +44,8 @@ class LaunchVehicle
         /******************************************************************************************
          * SA-2: Motor Burnout Detection Sub-Algorithm
          * 
+         * Author(s): TBD
+         * 
          * Determines whether or not motor burnout has completed. Motor burnout is the moment after
          * which the vehicle's motor is no longer firing. 
          * 
@@ -50,12 +54,48 @@ class LaunchVehicle
         bool motorBurnoutDetected();
 
         /******************************************************************************************
-         * SA-4: Data Acquisition Threshold Determination (Based on DAQ parameters)
+         * SA-3: Deployment Incrementation Sub-Algorithm (Calculate Percent Deployment)
+         * 
+         * Author(s): Patrick Roche
+         *
+         * Determines how much the air brake should deploy as an absolute percentage. A value of
+         * 100 indicates that 100% of the air brake should be deployed, whereas a value of 0%
+         * indicates that none of the air brake should be deployed. This value should be within
+         * 0 to 100 (inclusive).
+         * 
+         * @return percent absolutely air brake deployment (0 to 100 inclusive).
+         *****************************************************************************************/
+        int calculatePercentDeployment();
+
+        /******************************************************************************************
+         * SA-4: Apogee Prediction Sub-Algorithm
+         * 
+         * Author(s): Fernando Tabares
+         * 
+         * Predicts the current apogee based on readings from the altimeter and IMU. 
+         * 
+         * @return the current predicted apogee
+         *****************************************************************************************/
+        long predictApogee();
+
+        /******************************************************************************************
+         * SA-5: Descent Detection Sub-Algorithm
+         * 
+         * Author(s): Sona Padinjarekutt
+         * 
+         * Determines whether or not the vehicle has achieved apogee and has started to descend. 
+         * 
+         * @return true if the vehicle is descending, false otherwise.
+         *****************************************************************************************/
+        bool descentDetected();
+
+        /******************************************************************************************
+         * Data Acquisition Threshold Determination (Based on DAQ I-6 and I-7 parameters)
          * 
          * Determines whether or not enough data has been collected to begin using the data for 
          * apogee prediction. Without enough data, apogee prediction will be inaccurate and should
          * not be used to control the air brake. "Enough data" is a soft measure which is 
-         * determined through experimentation. 
+         * determined through experimentation and controlled using parameters I-6 and I-7.
          * 
          * @return true if the data acquisition threshold has been met, false otherwise.
          *****************************************************************************************/
@@ -76,25 +116,7 @@ class LaunchVehicle
          * 
          * @return -1 if below range, 0 if within range, 1 if above range.
          *****************************************************************************************/
-        bool isWithinImmediateDeployment();
-
-        /******************************************************************************************
-         * SA-5: Descent Detection Sub-Algorithm
-         * 
-         * Determines whether or not the vehicle has achieved apogee and has started to descend. 
-         * 
-         * @return true if the vehicle is descending, false otherwise.
-         *****************************************************************************************/
-        bool descentDetected();
-
-        /******************************************************************************************
-         * SA-5: Apogee Prediction Sub-Algorithm
-         * 
-         * Predicts the current apogee based on readings from the altimeter and IMU. 
-         * 
-         * @return the current predicted apogee
-         *****************************************************************************************/
-        long predictApogee();
+        bool isWithinImmediateDeploymentRange();
 
         /******************************************************************************************
          * Within Range for Incremental Partial Deployment
@@ -111,24 +133,37 @@ class LaunchVehicle
          * 
          * @return -1 if below range, 0 if within range, 1 if above range.
          *****************************************************************************************/
-        int withinPartialDeploymentRange();
+        int isWithinPartialDeploymentRange();  
 
         /******************************************************************************************
-         * Calculate Deployment Action
-         *
-         * Determines how much the air brake should deploy as an absolute percentage. A value of
-         * 100 indicates that 100% of the air brake should be deployed, whereas a value of 0%
-         * indicates that none of the air brake should be deployed. This value should be within
-         * 0 to 100 (inclusive).
+         * Reads data from both the IMU and altimeter and packages in a single Data object.
          * 
-         * @return percent absolutely air brake deployment (0 to 100 inclusive).
+         * @param data the data struct to populate and return
+         * @return Data most recent reading from altimeter and IMU
          *****************************************************************************************/
-        int calculateDeploymentAction();
+        Data readFromSensors(Data data);
 
     private:
 
+        /******************************************************************************************
+         * Checks if the I-6 height data acquisition threshold has been met.
+         * 
+         * @return bool true if the height data acquisition threshold has been met, false otherwise
+         *****************************************************************************************/
+        bool meetsDaqHeightThreshold();
+
+        /******************************************************************************************
+         * Checks if the I-7 data quantity data acquisition threshold has been met.
+         * 
+         * @return bool true if the height data acquisition threshold has been met, false otherwise
+         *****************************************************************************************/
+        bool meetsDaqDataPointThreshold();
+
         AbstractImu* imu;
         AbstractAltimeter* altimeter;
+
+        uint64_t altitude_of_burnout;
+        uint64_t data_points_read_at_burnout;
 };
 
 #endif // __LaunchVehicle_HPP__
