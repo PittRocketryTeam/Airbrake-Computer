@@ -13,9 +13,9 @@ void loop(void);
 /*************************************************************************************************/
 
 /************************************************ Globals ****************************************/
-LaunchVehicle vehicle;
-Airbrake airbrake;
-Airbrake_State state;
+LaunchVehicle vehicle;  // Makes decisions about the state of the vehicle based on sensor data
+Airbrake airbrake;      // Actuates the air brake and interacts with air brake hardware
+Airbrake_State state;   // Keeps track of current state
 /*************************************************************************************************/
 
 /**************************************************************************************************
@@ -23,7 +23,7 @@ Airbrake_State state;
  *************************************************************************************************/
 void setup() 
 {
-    delay(2000);
+    delay(4000);
     Serial.println("In setup"); 
 
     state = START;
@@ -33,7 +33,7 @@ void setup()
         Serial.println("MANUAL: Using mocked sensors");
         
         // Set up mock sensor with data file path on micro SD
-        MockHelper mockHelper((char*)"data.txt");
+        MockHelper mockHelper((char*)"loggylog.csv");
         mockHelper.init();
 
         // Mocked sensors
@@ -58,40 +58,37 @@ void setup()
  *************************************************************************************************/
 void loop() 
 {
-    delay(100);
+    delay(STATE_DELAY);
     
     switch (state)
     {
         case START:
 
             Serial.println("State: START");
-            // if (manualSkipState())
-            // {
-            //     state = LAUNCH_DETECTED;
-            //     break;
-            // }
+
+            Serial.println("Reading from sensors");
+
+            Data data;
+            data = vehicle.readFromSensors(data);
+
+            Serial.println("read from sensors complete");
 
             if (vehicle.launchDetected())       // Check if launch has been detected 
             {
                 state = LAUNCH_DETECTED;
-                break;
             }
+
 
             break;
         
         case LAUNCH_DETECTED:
 
-            Serial.println("State: LAUNCH_DETECTED");
-            // if (manualSkipState())
-            // {
-            //     state = BURNOUT_DETECTED;
-            //     break;
-            // }
+            // Consider waiting until here to power on motor
 
+            Serial.println("State: LAUNCH_DETECTED");
             if (vehicle.motorBurnoutDetected()) // Check if motor burnout has been detected
             {
                 state = BURNOUT_DETECTED;
-                break;
             }
 
             break;
@@ -99,16 +96,9 @@ void loop()
         case BURNOUT_DETECTED:
 
             Serial.println("State: BURNOUT_DETECTED");
-            // if (manualSkipState())
-            // {
-            //     state = DAQ_THRESHOLD_MET_ACTIVE_ADJUST;
-            //     break;
-            // }
-
             if (vehicle.daqThresholdMet())     // Check if data acquisition threshold has been met
             {
                 state = DAQ_THRESHOLD_MET_ACTIVE_ADJUST;
-                break;
             }
 
             break;
@@ -116,21 +106,13 @@ void loop()
         case DAQ_THRESHOLD_MET_ACTIVE_ADJUST:
 
             Serial.println("State: DAQ_THRESHOLD_MET_ACTIVE_ADJUST");
-            // if (manualSkipState())
-            // {
-            //     state = DESCENT_DETECTED;
-            //     break;
-            // }
-
-            // Move to descent state if descent has been detected
-            if (vehicle.descentDetected())
+            if (vehicle.descentDetected()) // Check for descent
             {
                 state = DESCENT_DETECTED;
                 break;
             }
 
-            // Check if vehicle is within range for immediate deployment
-            if (vehicle.isWithinImmediateDeployment())
+            if (vehicle.isWithinImmediateDeploymentRange()) // Check for immediate deployment
             {
                 airbrake.deployCompletely();        // Deploy air brake completely
                 while (!vehicle.descentDetected()); // Wait until descent is detected
@@ -139,9 +121,9 @@ void loop()
             }
 
             // Otherwise, proceed with fine adjustment algorithm
-            if (vehicle.withinPartialDeploymentRange() > 0) // Predicted apogee > target apogee
+            if (vehicle.isWithinPartialDeploymentRange() > 0) // Predicted apogee > target apogee
             {
-                int percent_deployment = vehicle.calculateDeploymentAction(); // Calculate action
+                int percent_deployment = vehicle.calculatePercentDeployment(); // Calculate action
                 airbrake.setAbsoluteDeployment(percent_deployment); // Deploy percent air brake 
             }
 
@@ -150,12 +132,6 @@ void loop()
         case DESCENT_DETECTED:
 
             Serial.println("State: DESCENT_DETECTED");
-            // if (manualSkipState())
-            // {
-            //     state = TERMINATION;
-            //     break;
-            // }
-
             airbrake.retractCompletely(); // Retract to 0%
             state = TERMINATION;          // Terminate
 

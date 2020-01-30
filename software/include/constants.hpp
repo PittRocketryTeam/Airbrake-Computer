@@ -1,4 +1,7 @@
+// Constants and integer parameters.
+
 // #define LOGFILE (char*)"lessdata.csv"
+// #define VERBOSE true
 
 #define MANUAL_MODE true    // Testing flag; set to true when testing, false for automatic mode
 
@@ -51,7 +54,7 @@
 #define DAQ_THRESHOLD_ALTITUDE 50
 
 /************************************************************************************************** 
- * I-6: Data acquisition threshold (# data points collected since motor burnout).       Unit: feet
+ * I-7: Data acquisition threshold (# data points collected since motor burnout).       Unit: feet
  * 
  * This is one of the parameters that is used to set the data acquisition threshold. It defines
  * the number of data points collected since motor burnout detection when enough data has been 
@@ -86,6 +89,12 @@
 #define AIRBRAKE_MAX_HEIGHT 0.74
 
 /************************************************************************************************** 
- * Total surface area of air brake when 100% deployed.                         sUnit: square inches
+ * Total surface area of air brake when 100% deployed.                          Unit: square inches
  *************************************************************************************************/ 
 #define TOTAL_AIRBRAKE_SURFACE_AREA 28.3 
+
+/**************************************************************************************************
+ * Amount of time to wait between main states.                                   Unit: milliseconds
+ * Lower wait times mean faster state transitions,
+**************************************************************************************************/
+#define STATE_DELAY 100

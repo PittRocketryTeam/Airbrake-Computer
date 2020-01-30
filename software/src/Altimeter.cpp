@@ -10,15 +10,23 @@ Altimeter::~Altimeter(){}
 
 bool Altimeter::init()
 {
-    Serial.println("initing");
-    if(!bmp.begin())
+    int i;
+    for (i=0; i < 20; i++)
     {
-        Serial.println("Couldn't init altimeter!");
-        return false;
-    } else {
-        Serial.println("Altimeter init successful");
-        return true;
+        if (bmp.begin())
+        {
+            Serial.println("altimeter init succeeded");
+            break;
+        }
+        else
+        {
+            Serial.println("altimeter init failed");
+        }
+
+        delay(100);
     }
+
+    return true;
 }
 
 Data Altimeter::read(Data data)
@@ -26,17 +34,13 @@ Data Altimeter::read(Data data)
     data.altimeterData.temperature = bmp.temperature;
     data.altimeterData.pressure = bmp.pressure;
 
-    // case where initAlt isn't set -- haven't hit button on ground control yet to indicate we're 
-    // ready to launch
-    if(initAlt == -1) 
+    if(initAlt == -1) //case where initAlt isn't set -- haven't hit button on ground control yet to indicate we're ready to launch
     {
         Serial.println("Cannot poll altitude --- ground pressure not yet set!");
     }
     else
     {
-        // does not performReading again, altitude is just calculated from the pressure and the 
-        // ground level pressure set earlier
-        data.altimeterData.altitude = bmp.readAltitude(initAlt);
+        data.altimeterData.altitude = bmp.readAltitude(initAlt);//does not performReading again, altitude is just calculated from the pressure and the ground level pressure set earlier
     }
 
     return data;
@@ -44,18 +48,14 @@ Data Altimeter::read(Data data)
 
 Data Altimeter::poll(Data data)
 {
-    // assigns values to pressure and temperature
-    if(!bmp.performReading()) 
+    if(!bmp.performReading()) //assigns values to pressure and temperature
     {
         Serial.println("Failed to perform reading :(");
     }
 
     data.altimeterData.temperature = bmp.readTemperature();
     data.altimeterData.pressure = bmp.readPressure();
-
-    // case where initAlt isn't set -- haven't hit button on ground control yet to indicate we're
-    // ready to launch
-    if(initAlt == -1) 
+    if(initAlt == -1) //case where initAlt isn't set -- haven't hit button on ground control yet to indicate we're ready to launch
     {
         Serial.println("Cannot poll altitude --- ground pressure not yet set!");
     }
@@ -64,9 +64,7 @@ Data Altimeter::poll(Data data)
         data.altimeterData.altitude = bmp.readAltitude(initAlt);
     }
     
-    Serial.printf("temp: %f\npressure: %f\nalt: %f\n", data.altimeterData.temperature, 
-                                                       data.altimeterData.pressure, 
-                                                       data.altimeterData.altitude);
+    Serial.printf("temp: %f\tpressure: %f\talt: %f\t", data.altimeterData.temperature, data.altimeterData.pressure, data.altimeterData.altitude);
     
     return data;
 }
@@ -84,10 +82,17 @@ void Altimeter::disable()
 {
     bmp_dev->settings.op_mode = BMP3_SLEEP_MODE;
     if(bmp3_set_op_mode(bmp_dev) != 0)
+    {
         Serial.println("Altimeter failed to disable");
+    }
 }
 
 void Altimeter::setBaselinePressure()
 {
     initAlt = bmp.readPressure();
+}
+
+uint64_t Altimeter::getNumDataPoints()
+{
+    return data_points_read;
 }

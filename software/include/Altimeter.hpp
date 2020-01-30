@@ -24,6 +24,8 @@ class Altimeter : public AbstractAltimeter
         virtual void disable() override;
         
         virtual void setBaselinePressure() override;
+
+        virtual uint64_t getNumDataPoints() override;
 };
 
 #endif

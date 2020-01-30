@@ -36,6 +36,8 @@ class IMU : public AbstractImu
 
         virtual void enable() override;
         virtual void disable() override;
+
+        virtual uint64_t getNumDataPoints() override;
 };
 
 #endif

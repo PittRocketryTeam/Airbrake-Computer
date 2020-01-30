@@ -30,6 +30,8 @@ class MockImu : public AbstractImu
 
         virtual void enable() override;
         virtual void disable() override;
+
+        uint64_t getNumDataPoints();    
 };
 
 #endif // __MOCKIMU_HPP__

@@ -2,20 +2,8 @@
 
 IMU::IMU()
 {
-    sensor = Adafruit_BNO055(55, IMU_ADDR);
+    sensor = Adafruit_BNO055(55, IMU_ADDR, &Wire1);
     verbose = false;
-    ax = 0.0f;
-    ay = 0.0f;
-    az = 0.0f;
-    ox = 0.0f;
-    oy = 0.0f;
-    oz = 0.0f;
-}
-
-IMU::IMU(bool v = false)
-{
-    sensor = Adafruit_BNO055(55, IMU_ADDR);
-    verbose = v;
     ax = 0.0f;
     ay = 0.0f;
     az = 0.0f;
@@ -31,7 +19,6 @@ IMU::~IMU()
 
 bool IMU::init()
 {
-
     int i;
     for (i = 0; i < 10; ++i)
     {
@@ -55,7 +42,7 @@ bool IMU::init()
 
     enable();
 
-    return false;
+    return true;
 }
 
 Data IMU::read(Data data)
@@ -73,7 +60,9 @@ Data IMU::read(Data data)
 
 Data IMU::poll(Data data)
 {
+    Serial.println("inside imu poll....");
     sensor.getEvent(&event);
+    Serial.println("gotten event");
 
     o = sensor.getVector(Adafruit_BNO055::VECTOR_EULER);
     ox = (float)o.x();
@@ -84,6 +73,8 @@ Data IMU::poll(Data data)
     ax = (float)a.x();
     ay = (float)a.y();
     az = (float)a.z();
+
+    data_points_read++;
 
     return read(data);
 }
@@ -106,4 +97,9 @@ void IMU::disable()
     }
 
     sensor.enterSuspendMode();
+}
+
+uint64_t IMU::getNumDataPoints()
+{
+    return data_points_read;
 }

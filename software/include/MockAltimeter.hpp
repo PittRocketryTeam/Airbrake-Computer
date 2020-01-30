@@ -31,6 +31,8 @@ class MockAltimeter : public AbstractAltimeter
         virtual void disable() override;
 
         virtual void setBaselinePressure() override;
+        
+        uint64_t getNumDataPoints();
 };
 
 #endif // __MOCKALTIMETER_HPP__

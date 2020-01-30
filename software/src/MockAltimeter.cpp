@@ -29,6 +29,8 @@ Data MockAltimeter::poll(Data data)
     pressure = data.altimeterData.pressure;
     altitude = data.altimeterData.altitude;
 
+    data_points_read++;
+
     return data;
 }
 
@@ -37,3 +39,8 @@ void MockAltimeter::enable() { }
 void MockAltimeter::disable() { }
 
 void MockAltimeter::setBaselinePressure() { }
+
+uint64_t MockAltimeter::getNumDataPoints()
+{
+    return data_points_read;
+}

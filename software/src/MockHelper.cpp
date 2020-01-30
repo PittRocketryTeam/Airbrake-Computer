@@ -45,82 +45,130 @@ void MockHelper::init()
     }
 
     delay(1000);
+
+    Data data;
+    char line[100];
+    while (file.fgets(line, sizeof(line)))
+    {
+        // Serial.println(line);
+
+        // char* chars_array = strtok(line, ",");
+        // while(chars_array)
+        // {
+        //     // MessageBox(NULL, subchar_array, NULL, NULL);
+        //     Serial.println(chars_array);
+
+        //     chars_array = strtok(NULL, ",");
+        // }
+
+        Serial.println(line);
+
+        char temp[sizeof(uint64_t)];
+        char float_temp[sizeof(float)];
+
+        memset(temp, 0, sizeof(temp));
+        strncpy(temp, line, 15);
+        temp[15] = '\0'; // IMPORTANT!
+        data.timestamp = strtoull(temp, NULL, 0);
+        Serial.println(data.timestamp);
+
+        memset(float_temp, 0, sizeof(float_temp));
+        strncpy(float_temp, line, 15);
+        float_temp[15] = '\0'; // IMPORTANT!
+        Serial.println(float_temp);
+        data.timestamp = atof(float_temp);
+        Serial.println(data.timestamp);
+
+        // data.altimeterData.pressure = strtoull(line, NULL, 0);
+        // Serial.println(data.altimeterData.pressure);
+
+        // data.altimeterData.altitude = strtoull(line, NULL, 0);
+        // Serial.println(data.altimeterData.altitude);
+
+        delay(1000);
+
+
+    }
 }
 
 MockHelper::~MockHelper() { }
 
 Data MockHelper::getNextDataPoint(Data data)
 {
-    Serial.println("\nMockHelper: inside getNextDataPoint()");
+    // Serial.println("\nMockHelper: inside getNextDataPoint()");
 
-    file.open(filename, FILE_READ);
+    // file.open(filename, FILE_READ);
+    // file.seekSet(84);
+    // Serial.println(file.curPosition());
 
-    char line[10];
-    file.fgets(line, sizeof(line));
-    Serial.println(line);
+    // char line[84];
+    // file.fgets(line, sizeof(line));
+    // Serial.println(line);
+    // Serial.println(file.curPosition());
+    // Serial.println(file.fileSize());
 
-    // char buf[9];
+    // data.timestamp
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line));  
+    // data.timestamp = strtoull(line, NULL, 0);
+    // Serial.println(data.timestamp);
 
-    // // data.timestamp
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf), (char*)",");  
-    // data.timestamp = strtoull(buf, NULL, 0);
-
-    // // data.altimeterData.temperature
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf), (char*)",");  
-    // data.altimeterData.temperature = strtoull(buf, NULL, 0);
+    // data.altimeterData.temperature
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line));  
+    // data.altimeterData.temperature = strtoull(line, NULL, 0);
+    // Serial.println(data.altimeterData.temperature);
 
     // // data.altimeterData.pressure
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf), (char*)",");  
-    // data.altimeterData.pressure = strtoull(buf, NULL, 0);
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line), (char*)",");  
+    // data.altimeterData.pressure = strtoull(line, NULL, 0);
 
     // // data.altimeterData.altitude
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf), (char*)",");
-    // data.altimeterData.altitude = strtoull(buf, NULL, 0);
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line), (char*)",");
+    // data.altimeterData.altitude = strtoull(line, NULL, 0);
 
     // // data.imuData.euler_abs_orientation_x
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf), (char*)",");
-    // data.imuData.euler_abs_orientation_x = strtoull(buf, NULL, 0);
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line), (char*)",");
+    // data.imuData.euler_abs_orientation_x = strtoull(line, NULL, 0);
 
     // // data.imuData.euler_abs_orientation_y
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf), (char*)",");
-    // data.imuData.euler_abs_orientation_y = strtoull(buf, NULL, 0);
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line), (char*)",");
+    // data.imuData.euler_abs_orientation_y = strtoull(line, NULL, 0);
 
     // // data.imuData.euler_abs_orientation_z
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf), (char*)",");
-    // data.imuData.euler_abs_orientation_z = strtoull(buf, NULL, 0);
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line), (char*)",");
+    // data.imuData.euler_abs_orientation_z = strtoull(line, NULL, 0);
 
     // // data.imuData.acceleration_x
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf), (char*)",");
-    // data.imuData.acceleration_x = strtoull(buf, NULL, 0);
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line), (char*)",");
+    // data.imuData.acceleration_x = strtoull(line, NULL, 0);
 
     // // data.imuData.acceleration_y
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf), (char*)",");
-    // data.imuData.acceleration_y = strtoull(buf, NULL, 0);
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line), (char*)",");
+    // data.imuData.acceleration_y = strtoull(line, NULL, 0);
 
     // // data.imuData.acceleration_z
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf), (char*)",");
-    // data.imuData.acceleration_z = strtoull(buf, NULL, 0);
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line), (char*)",");
+    // data.imuData.acceleration_z = strtoull(line, NULL, 0);
 
     // // data.healthData.main_battery_temperature
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf), (char*)",");
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line), (char*)",");
 
     // // data.photocellData.brightness
-    // memset(buf, 0, sizeof(buf));
-    // file.fgets(buf, sizeof(buf));
+    // memset(line, 0, sizeof(line));
+    // file.fgets(line, sizeof(line));
 
-    // Serial.println(data.timestamp);
-    // Serial.println(data.altimeterData.temperature);
+    
+    
     // Serial.println(data.altimeterData.pressure);
     // Serial.println(data.altimeterData.altitude);
     // Serial.println(data.imuData.euler_abs_orientation_x);

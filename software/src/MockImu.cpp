@@ -24,6 +24,8 @@ Data MockImu::read(Data data)
     data.imuData.acceleration_y = ay;
     data.imuData.acceleration_z = az;
 
+    data_points_read++;
+
     return data;
 }
 
@@ -47,3 +49,8 @@ Data MockImu::poll(Data data)
 void MockImu::enable() { }
 
 void MockImu::disable() { }
+
+uint64_t MockImu::getNumDataPoints()
+{
+    return data_points_read;
+}
