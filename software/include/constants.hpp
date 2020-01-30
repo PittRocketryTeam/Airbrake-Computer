@@ -1,9 +1,8 @@
 // Constants and integer parameters.
 
-// #define LOGFILE (char*)"lessdata.csv"
-// #define VERBOSE true
-
-#define MANUAL_MODE true    // Testing flag; set to true when testing, false for automatic mode
+#define LOGFILE (char*)"loggylog.csv"
+#define VERBOSE true        // Testing flat; set to false for flight
+#define MANUAL_MODE true    // Testing flag; set to false for flight
 
 /**************************************************************************************************
  * I-1: Target apogee.                                                                  Unit: feet
@@ -95,6 +94,6 @@
 
 /**************************************************************************************************
  * Amount of time to wait between main states.                                   Unit: milliseconds
- * Lower wait times mean faster state transitions,
+ * Lower wait times mean faster state transitions.
 **************************************************************************************************/
 #define STATE_DELAY 100
