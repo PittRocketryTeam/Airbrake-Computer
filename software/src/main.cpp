@@ -15,7 +15,7 @@ void loop(void);
 /************************************************ Globals ****************************************/
 LaunchVehicle vehicle;  // Makes decisions about the state of the vehicle based on sensor data
 Airbrake airbrake;      // Actuates the air brake and interacts with air brake hardware
-Airbrake_State state;   // Keeps track of current state
+Airbrake_State state;   // Keeps track of current state in FSM
 /*************************************************************************************************/
 
 /**************************************************************************************************
@@ -24,19 +24,19 @@ Airbrake_State state;   // Keeps track of current state
 void setup() 
 {
     delay(4000);
-    Serial.println("In setup"); 
+    if (VERBOSE) { Serial.println("In setup"); }
 
     state = START;
 
     if (MANUAL_MODE)
     {
-        Serial.println("MANUAL: Using mocked sensors");
+        if (VERBOSE) { Serial.println("MANUAL MODE: Using mocked sensors"); }
         
         // Set up mock sensor with data file path on micro SD
-        MockHelper mockHelper((char*)"loggylog.csv");
+        MockHelper mockHelper(LOGFILE);
         mockHelper.init();
-
-        // Mocked sensors
+    
+        // Initialize mocked sensors
         MockImu imu(mockHelper);
         MockAltimeter altimeter(mockHelper);
 
@@ -44,9 +44,9 @@ void setup()
     }
     else
     {
-        Serial.println("AUTOMATIC: Using real sensors");
+        if (VERBOSE) { Serial.println("AUTOMATIC MODE: Using real sensors"); }
 
-        // Real sensors
+        // Initialize real sensors
         IMU imu;
         Altimeter altimeter;
 
@@ -64,28 +64,19 @@ void loop()
     {
         case START:
 
-            Serial.println("State: START");
-
-            Serial.println("Reading from sensors");
-
-            Data data;
-            data = vehicle.readFromSensors(data);
-
-            Serial.println("read from sensors complete");
+            if (VERBOSE) { Serial.println("State: START"); }
 
             if (vehicle.launchDetected())       // Check if launch has been detected 
             {
                 state = LAUNCH_DETECTED;
             }
 
-
             break;
         
         case LAUNCH_DETECTED:
 
-            // Consider waiting until here to power on motor
+            if (VERBOSE) { Serial.println("State: LAUNCH_DETECTED"); }
 
-            Serial.println("State: LAUNCH_DETECTED");
             if (vehicle.motorBurnoutDetected()) // Check if motor burnout has been detected
             {
                 state = BURNOUT_DETECTED;
@@ -95,7 +86,8 @@ void loop()
 
         case BURNOUT_DETECTED:
 
-            Serial.println("State: BURNOUT_DETECTED");
+            if (VERBOSE) { Serial.println("State: BURNOUT_DETECTED"); }
+
             if (vehicle.daqThresholdMet())     // Check if data acquisition threshold has been met
             {
                 state = DAQ_THRESHOLD_MET_ACTIVE_ADJUST;
@@ -105,7 +97,8 @@ void loop()
         
         case DAQ_THRESHOLD_MET_ACTIVE_ADJUST:
 
-            Serial.println("State: DAQ_THRESHOLD_MET_ACTIVE_ADJUST");
+            if (VERBOSE) { Serial.println("State: DAQ_THRESHOLD_MET_ACTIVE_ADJUST"); } 
+
             if (vehicle.descentDetected()) // Check for descent
             {
                 state = DESCENT_DETECTED;
@@ -121,7 +114,7 @@ void loop()
             }
 
             // Otherwise, proceed with fine adjustment algorithm
-            if (vehicle.isWithinPartialDeploymentRange() > 0) // Predicted apogee > target apogee
+            if (vehicle.isWithinPartialDeploymentRange() > 0) // Check if predicted apogee > target apogee
             {
                 int percent_deployment = vehicle.calculatePercentDeployment(); // Calculate action
                 airbrake.setAbsoluteDeployment(percent_deployment); // Deploy percent air brake 
@@ -131,7 +124,8 @@ void loop()
 
         case DESCENT_DETECTED:
 
-            Serial.println("State: DESCENT_DETECTED");
+            if (VERBOSE) { Serial.println("State: DESCENT_DETECTED"); }
+
             airbrake.retractCompletely(); // Retract to 0%
             state = TERMINATION;          // Terminate
 
@@ -139,7 +133,8 @@ void loop()
 
         case TERMINATION:
 
-            Serial.println("State: TERMINATION");
+            if (VERBOSE) { Serial.println("State: TERMINATION"); }
+            
             while (true); // Infinite loop (state machine termination)
 
             break;

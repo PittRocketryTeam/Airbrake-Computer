@@ -7,7 +7,9 @@
 #include "sdios.h"
 #include "Data.hpp"
 
-#define k_rows 20000
+#include "constants.hpp"
+
+#define k_rows 1500
 #define k_bytes_per_line 96
 
 #define BUILTIN_SDCARD 254
@@ -27,14 +29,12 @@ class MockHelper
 
     private:
 
-        float temp, brightness;    // throwaway values to satisfy reads
+        Data mock_data[k_rows];
 
-        int file_index;            // Current index in file (in bytes)
-
-        char* filename;            // Name of data file
-
-        SdFat32 SD;                  // SD reader object
-
+        float temp, brightness;  // throwaway values to satisfy reads
+        int data_index;          // Current data point number
+        char* filename;          // Name of data file
+        SdFat32 SD;              // SD reader object
         File32 file;
 };
 
