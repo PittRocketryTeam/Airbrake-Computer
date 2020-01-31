@@ -1,4 +1,5 @@
-# 1. Overview
+# Airbrake (VDS) Software
+## 1. Overview
 
 This software was designed to run on a Teensy 3.6 in support of the 2019-2020 Pitt SOAR variable drag system (VDS) airbrake for the full scale NASA USLI launch vehicle. The purpose of the airbrake is to control the launch vehicle's apogee to try to get the vehicle as close to its declared target apogee as possible.
 
@@ -14,35 +15,35 @@ The primary design goals of this software (aside from supporting the mission of 
 
 3. __Promote code reuse.__ This is just one of several software projects for Pitt SOAR's 2019-2020 USLI vehicle, and several other software projects use similar functionality. Heavy emphasis was placed on reusing software from other projects and on making new software reusable elsewhere.
 
-# 2. Sub-Algorithm Descriptions
+## 2. Sub-Algorithm Descriptions
 
-## 2.1 SA-1: Determination of Launch Detection
-
-TODO: Add description
-
-## 2.2: SA-2 Determination of Motor Burnout
+### 2.1 SA-1: Determination of Launch Detection
 
 TODO: Add description
 
-## 2.3: SA-3: Airbrake Deployment Incrementation Algorithm
+### 2.2: SA-2 Determination of Motor Burnout
 
 TODO: Add description
 
-## 2.4: SA-4: Apogee Prediction
+### 2.3: SA-3: Airbrake Deployment Incrementation Algorithm
 
 TODO: Add description
 
-## 2.5: SA-5: Determination of Descent Detection
+### 2.4: SA-4: Apogee Prediction
 
 TODO: Add description
 
-# 3. Dev Environment Setup
+### 2.5: SA-5: Determination of Descent Detection
+
+TODO: Add description
+
+## 3. Dev Environment Setup
 
 All development used the PlatformIO extension for Visual Studio Code.
 
 TODO: Add more info
 
-# 4. Relevant Links
+## 4. Relevant Links
 
 * [Original deployment algorithm documentation ](https://docs.google.com/document/d/1qq0nmyqW3g3wkucI6V3XiiaBdJnb-GQawClglQOAYOM/edit#)
 * [Sub-algorithm test plan](https://docs.google.com/document/d/130fPIKDiWxRjwC1eHgn8vEJmvnMhvv1aIwvGFC2JZu0/edit)
