@@ -14,6 +14,10 @@ The primary design goals of this software (aside from supporting the mission of 
 
 3. __Promote code reuse.__ This is just one of several software projects for Pitt SOAR's 2019-2020 USLI vehicle, and several other software projects use similar functionality. Heavy emphasis was placed on reusing software from other projects and on making new software reusable elsewhere.
 
+Beyond design goals, success is defined as the launch vehicle achieving within 70 feet of its target apogee, regardless of whether or not the airbrake blades ever deploy during flight. Shown below is a formalize definition of how success is defined for airbrake operation.
+
+![success-determination](success-determination.png)
+
 # 2. Sub-Algorithm Descriptions
 
 ## 2.1 SA-1: Determination of Launch Detection

@@ -1,6 +1,6 @@
 // Constants and integer parameters.
 
-#define LOGFILE (char*)"loggylog.csv"
+#define LOGFILE (char*)"lessdata.csv"
 #define VERBOSE true        // Testing flat; set to false for flight
 #define MANUAL_MODE true    // Testing flag; set to false for flight
 
@@ -26,11 +26,6 @@
  * feet, it will trigger immediate 100% deployment of the air brake.
  *************************************************************************************************/
 #define IMMEDIATE_DEPLOYMENT_RANGE 25
-
-/**************************************************************************************************
- * I-4: Rate of data sampling for sensors.                                              Unit: Hertz
- *************************************************************************************************/
-// #define DATA_SAMPLING_RATE 60
 
 /************************************************************************************************** 
  * I-5: Offset for altimeter reading to calibrate altimeter to match stratologger.      Unit: feet
@@ -60,7 +55,7 @@
  * collected. For example, if this value is 50, that means at least 50 feet mush be gained over 
  * the altiude at which motor burnout was completed.
  *************************************************************************************************/ 
-#define DAQ_THRESHOLD_DATA_POINTS
+#define DAQ_THRESHOLD_DATA_POINTS 55
 
 /**************************************************************************************************
  * Lower bound of partial deployment range.                                             Unit: feet
@@ -94,6 +89,6 @@
 
 /**************************************************************************************************
  * Amount of time to wait between main states.                                   Unit: milliseconds
- * Lower wait times mean faster state transitions.
+ * Lower wait times mean faster state transitions. This should be high for testing, low for flight.
 **************************************************************************************************/
 #define STATE_DELAY 100
