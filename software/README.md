@@ -43,12 +43,12 @@ TODO: Add description
 
 ## 3. Dev Environment Setup
 
-All development used the PlatformIO extension for Visual Studio Code.
+All development used the PlatformIO extension for Visual Studio Code. Additionally, you need to download the [Teensyduino addon](https://www.pjrc.com/teensy/td_download.html) in order to upload to the Teensy.  
 
 TODO: Add more info
 
 ## 4. Relevant Links
 
-* [Original deployment algorithm documentation ](https://docs.google.com/document/d/1qq0nmyqW3g3wkucI6V3XiiaBdJnb-GQawClglQOAYOM/edit#)
+* [Original deployment algorithm documentation](https://docs.google.com/document/d/1qq0nmyqW3g3wkucI6V3XiiaBdJnb-GQawClglQOAYOM/edit#)
 * [Sub-algorithm test plan](https://docs.google.com/document/d/130fPIKDiWxRjwC1eHgn8vEJmvnMhvv1aIwvGFC2JZu0/edit)
 * [Sub-algorithm test matrix](https://docs.google.com/spreadsheets/d/1-hUiYAFvpETWn4wtxwzF-okXmnx6dhZY2qigwSgHFRo/edit)
