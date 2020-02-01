@@ -41,13 +41,80 @@ TODO: Add description
 
 TODO: Add description
 
-## 3. Dev Environment Setup
+## 3. Build Configurations
 
-All development used the PlatformIO extension for Visual Studio Code. Additionally, you need to download the [Teensyduino addon](https://www.pjrc.com/teensy/td_download.html) in order to upload to the Teensy.  
+In order to fly and test the same code, there are several flags that are set to modify the behavior of the code. Below, the different build configurations for flight and test are explained. 
 
-TODO: Add more info
+### 3.1. Flight Build
 
-## 4. Relevant Links
+The flight build (what flies on the full scale vehicle) should have the following flags set:
+
+| Flag          | Value         | Explanation                                              |
+|:-------------:|:-------------:|:--------------------------------------------------------:|
+| VERBOSE       | false         | Limit I/O to allocate more resources towards computation |
+| MANUAL_MODE   | false         | Disable manual intervention and mock sensors             |
+
+All flight builds must uncomment the line `build_flags = -Wall -Wextra -Werror`.
+
+### 3.2. Test Build
+
+The test build (what's used during testing and __SHOULD NOT BE FLOWN__ can have the `VERBOSE` and `MANUAL_MODE` flags set to whatever is desirable for testing. Note that `MANUAL_MODE = true` enables the mock sensors.
+
+## 4. Basic Style Guidelines
+
+For the sake of consistency, this repo uses the following coding standards: 
+
+* Brackets should be on their own lines, and ALL conditional statements and loops must have brackets, like this: 
+
+```c++
+if(initAlt == -1) 
+{
+    Serial.println("Cannot poll altitude --- ground pressure not yet set!");
+}
+else
+{
+    data.altimeterData.altitude = bmp.readAltitude(initAlt);
+}
+```
+
+* Each function's definition belongs in a header file and should have a block comment with Javadoc-style annotations, like this:
+
+```c++
+/******************************************************************************************
+ * Initialize vehicle and sensors. Accepts an IMU and Altimeter objects so these sensors
+ * can be mocked.
+ * 
+ * @param AbstractImu imu object (or mock)
+ * @param AbstractAltimeter altimeter object (or mock)
+ *****************************************************************************************/
+void init(AbstractImu* i, AbstractAltimeter* a);
+```
+
+* Any constants (aside from -1, 0, and 1) should be named and should feature a block comment with a description of the constant, its intended use, and its imperial units (if relevant), like this:
+
+```c++
+/**************************************************************************************************
+ * I-2: Range for incremental partial deployments (tolerance around target apogee).     Unit: feet
+ * 
+ * This is used to control what the system considers apogee. Apogee, to the system, is 
+ * TARGET_APOGEE +/- PARTIAL_DEPLOYMENT_RANGE, e.g. if target apogee is 3700 feet, the system 
+ * considers anything between 3695 and 3905 to be apogee.
+ *************************************************************************************************/
+#define PARTIAL_DEPLOYMENT_RANGE 5  
+````
+
+* Lines should not exceed 100 characters.
+
+* All code should be compiled with all warnings enabled and reported as errors, using the compiler flags `-Wall -Wextra -Werror` (these are automatically included in the `platform.ini` file, which controls the build process. __These flags must be enabled for all flight builds.__
+ 
+ 
+## 5. Dev Environment Setup
+
+All development used the PlatformIO extension for Visual Studio Code. Additionally, you need to download the [Teensyduino addon](https://www.pjrc.com/teensy/td_download.html) in order to upload to the Teensy. 
+
+To build the project, run `pio run`. To upload the project to a Teensy board, run `platformio run --target upload`. To view serial output, run `platformio device monitor`.
+
+## 6. Relevant Links
 
 * [Original deployment algorithm documentation](https://docs.google.com/document/d/1qq0nmyqW3g3wkucI6V3XiiaBdJnb-GQawClglQOAYOM/edit#)
 * [Sub-algorithm test plan](https://docs.google.com/document/d/130fPIKDiWxRjwC1eHgn8vEJmvnMhvv1aIwvGFC2JZu0/edit)
