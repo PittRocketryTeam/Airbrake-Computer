@@ -49,11 +49,15 @@ TODO: Add description
 * `test` - unit tests
 * `data` - data files to supply mocked sensors with data
 
-## 4. Build Configurations
+## 4. Collaboration Process
+
+TODO: Add details about branch usage and merging
+
+## 5. Build Configurations
 
 In order to fly and test the same code, there are several flags that are set to modify the behavior of the code. Below, the different build configurations for flight and test are explained. 
 
-### 4.1. Flight Build
+### 5.1. Flight Build
 
 The flight build (what flies on the full scale vehicle) should have the following flags set:
 
@@ -64,11 +68,11 @@ The flight build (what flies on the full scale vehicle) should have the followin
 
 All flight builds must uncomment the line `build_flags = -Wall -Wextra -Werror`.
 
-### 4.2. Test Build
+### 5.2. Test Build
 
 The test build (what's used during testing and __SHOULD NOT BE FLOWN__ can have the `VERBOSE` and `MANUAL_MODE` flags set to whatever is desirable for testing. Note that `MANUAL_MODE = true` enables the mock sensors.
 
-## 5. Basic Style Guidelines
+## 6. Basic Style Guidelines
 
 For the sake of consistency, this repo uses the following coding standards: 
 
@@ -116,13 +120,13 @@ void init(AbstractImu* i, AbstractAltimeter* a);
 * All code should be compiled with all warnings enabled and reported as errors, using the compiler flags `-Wall -Wextra -Werror` (these are automatically included in the `platform.ini` file, which controls the build process. __These flags must be enabled for all flight builds.__
  
  
-## 6. Dev Environment Setup
+## 7. Dev Environment Setup
 
 All development used the PlatformIO extension for Visual Studio Code. Additionally, you need to download the [Teensyduino addon](https://www.pjrc.com/teensy/td_download.html) in order to upload to the Teensy. 
 
 To build the project, run `pio run`. To upload the project to a Teensy board, run `platformio run --target upload`. To view serial output, run `platformio device monitor`.
 
-## 7. Relevant Links
+## 8. Relevant Links
 
 * [Original deployment algorithm documentation](https://docs.google.com/document/d/1qq0nmyqW3g3wkucI6V3XiiaBdJnb-GQawClglQOAYOM/edit#)
 * [Sub-algorithm test plan](https://docs.google.com/document/d/130fPIKDiWxRjwC1eHgn8vEJmvnMhvv1aIwvGFC2JZu0/edit)
