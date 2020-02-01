@@ -51,7 +51,13 @@ TODO: Add description
 
 ## 4. Collaboration Process
 
-TODO: Add details about branch usage and merging
+In order to maintain records of which code has been flown, whenever a version is flown, it will be tagged as a major release.
+
+As far as collaboration, discretion should be used when pushing to the master branch. No code which does not compile should be pushed to master (and ideally, code that does not work should not be pushed to master either, but this is harder to verify). When deciding whether or not to push directly to master, use your best judgement. If you made a small change (e.g. edited a comment or a README), it's probably okay to push to master. On the other hand, if you've been editing a major file (e.g. main.cpp, LaunchVehicle.cpp, or Airbrake.cpp especially), you should probably ask the airbrake-software channel in the team Slack before pushing changes to master, mostly because there will likely be heavy merge conflicts.
+
+If you plan to make major changes to a major file, create your own branch and create a pull reqest containing a description of what you've changed (focus on change in functionality) and assign Rachel Misbin as the assignee. 
+
+Commit messages should be descriptive, more so when important changes were made. 
 
 ## 5. Build Configurations
 
