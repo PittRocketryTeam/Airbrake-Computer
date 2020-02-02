@@ -49,11 +49,21 @@ TODO: Add description
 * `test` - unit tests
 * `data` - data files to supply mocked sensors with data
 
-## 4. Build Configurations
+## 4. Collaboration Process
+
+In order to maintain records of which code has been flown, whenever a version is flown, it will be tagged as a major release.
+
+As far as collaboration, discretion should be used when pushing to the master branch. No code which does not compile should be pushed to master (and ideally, code that does not work should not be pushed to master either, but this is harder to verify). When deciding whether or not to push directly to master, use your best judgement. If you made a small change (e.g. edited a comment or a README), it's probably okay to push to master. On the other hand, if you've been editing a major file (e.g. main.cpp, LaunchVehicle.cpp, or Airbrake.cpp especially), you should probably ask the airbrake-software channel in the team Slack before pushing changes to master, mostly because there will likely be heavy merge conflicts.
+
+If you plan to make major changes to a major file, create your own branch and create a pull reqest containing a description of what you've changed (focus on change in functionality) and assign Rachel Misbin as the assignee. 
+
+Commit messages should be descriptive, more so when important changes were made. 
+
+## 5. Build Configurations
 
 In order to fly and test the same code, there are several flags that are set to modify the behavior of the code. Below, the different build configurations for flight and test are explained. 
 
-### 4.1. Flight Build
+### 5.1. Flight Build
 
 The flight build (what flies on the full scale vehicle) should have the following flags set:
 
@@ -64,11 +74,11 @@ The flight build (what flies on the full scale vehicle) should have the followin
 
 All flight builds must uncomment the line `build_flags = -Wall -Wextra -Werror`.
 
-### 4.2. Test Build
+### 5.2. Test Build
 
 The test build (what's used during testing and __SHOULD NOT BE FLOWN__ can have the `VERBOSE` and `MANUAL_MODE` flags set to whatever is desirable for testing. Note that `MANUAL_MODE = true` enables the mock sensors.
 
-## 5. Basic Style Guidelines
+## 6. Basic Style Guidelines
 
 For the sake of consistency, this repo uses the following coding standards: 
 
@@ -116,13 +126,13 @@ void init(AbstractImu* i, AbstractAltimeter* a);
 * All code should be compiled with all warnings enabled and reported as errors, using the compiler flags `-Wall -Wextra -Werror` (these are automatically included in the `platform.ini` file, which controls the build process. __These flags must be enabled for all flight builds.__
  
  
-## 6. Dev Environment Setup
+## 7. Dev Environment Setup
 
 All development used the PlatformIO extension for Visual Studio Code. Additionally, you need to download the [Teensyduino addon](https://www.pjrc.com/teensy/td_download.html) in order to upload to the Teensy. 
 
 To build the project, run `pio run`. To upload the project to a Teensy board, run `platformio run --target upload`. To view serial output, run `platformio device monitor`.
 
-## 7. Relevant Links
+## 8. Relevant Links
 
 * [Original deployment algorithm documentation](https://docs.google.com/document/d/1qq0nmyqW3g3wkucI6V3XiiaBdJnb-GQawClglQOAYOM/edit#)
 * [Sub-algorithm test plan](https://docs.google.com/document/d/130fPIKDiWxRjwC1eHgn8vEJmvnMhvv1aIwvGFC2JZu0/edit)
