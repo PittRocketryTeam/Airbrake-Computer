@@ -27,7 +27,7 @@ Data MockAltimeter::poll(Data data)
 
     temperature = data.altimeterData.temperature;
     pressure = data.altimeterData.pressure;
-    altitude = data.altimeterData.altitude;
+    altitude = data.altimeterData.altitude + ALT_CALIBRATION_OFFSET;    // Account for offset
 
     data_points_read++;
 

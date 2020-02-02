@@ -36,11 +36,11 @@ Data Altimeter::read(Data data)
 
     if(initAlt == -1) //case where initAlt isn't set -- haven't hit button on ground control yet to indicate we're ready to launch
     {
-        Serial.println("Cannot poll altitude --- ground pressure not yet set!");
+        if (VERBOSE) { Serial.println("Cannot poll altitude --- ground pressure not yet set!"); }
     }
     else
     {
-        data.altimeterData.altitude = bmp.readAltitude(initAlt);//does not performReading again, altitude is just calculated from the pressure and the ground level pressure set earlier
+        data.altimeterData.altitude = bmp.readAltitude(initAlt) + ALT_CALIBRATION_OFFSET;//does not performReading again, altitude is just calculated from the pressure and the ground level pressure set earlier
     }
 
     return data;
@@ -61,7 +61,7 @@ Data Altimeter::poll(Data data)
     }
     else
     {
-        data.altimeterData.altitude = bmp.readAltitude(initAlt);
+        data.altimeterData.altitude = bmp.readAltitude(initAlt) + ALT_CALIBRATION_OFFSET; // Account for offset
     }
     
     Serial.printf("temp: %f\tpressure: %f\talt: %f\t", data.altimeterData.temperature, data.altimeterData.pressure, data.altimeterData.altitude);

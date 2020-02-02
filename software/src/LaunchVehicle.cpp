@@ -32,10 +32,6 @@ bool LaunchVehicle::launchDetected()
 
     // TODO: Implement
 
-    Data data;
-    data = imu->poll(data);
-    Serial.println(data.timestamp);
-
     return ret;
 }
 

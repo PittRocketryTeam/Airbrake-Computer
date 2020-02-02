@@ -14,8 +14,6 @@ MockHelper::~MockHelper() { }
 
 void MockHelper::init()
 {
-    // delay(1000);
-
     if (VERBOSE) { Serial.println("Trying to init SD"); } 
     int i;
     for (i = 0; i < 1000; ++i)
@@ -28,8 +26,6 @@ void MockHelper::init()
         }
         if (VERBOSE) { Serial.println("cannot init SD"); }      
     }
-
-    // delay(1000);    
 
     // Make sure file exists
     if (SD.exists(filename))

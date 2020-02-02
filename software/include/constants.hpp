@@ -91,7 +91,7 @@
      * Amount of time to wait between main states.                                   Unit: milliseconds
      * Lower wait times mean faster state transitions. This should be high for testing, low for flight.
     **************************************************************************************************/
-    #define STATE_DELAY 100
+    #define STATE_DELAY 0
    
 #else       // constants for test build
     
@@ -186,5 +186,5 @@
      * Amount of time to wait between main states.                                   Unit: milliseconds
      * Lower wait times mean faster state transitions. This should be high for testing, low for flight.
     **************************************************************************************************/
-    #define STATE_DELAY 100
+    #define STATE_DELAY 50
 #endif

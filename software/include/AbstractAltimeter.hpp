@@ -3,6 +3,7 @@
 
 #include "Data.hpp"
 #include <cstdint>
+#include "constants.hpp"
 
 class AbstractAltimeter
 {
