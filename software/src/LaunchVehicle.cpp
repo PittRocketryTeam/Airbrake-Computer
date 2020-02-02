@@ -53,24 +53,6 @@ bool LaunchVehicle::daqThresholdMet()
     return ret;
 }
 
-bool LaunchVehicle::isWithinImmediateDeploymentRange()
-{
-    bool ret = false;
-
-    // TODO: Implement
-
-    // Data data = imu->poll(data);
-    // float current_altitude = data.altimeterData.altitude;
-
-    // if ((current_altitude >= IMMEDIATE_DEPLOYMENT_LOWER_BOUND) && 
-    //     (current_altitude <= IMMEDIATE_DEPLOYMENT_UPPER_BOUND))
-    // {
-    //     ret = true;
-    // }
-    
-    return ret;
-}
-
 bool LaunchVehicle::descentDetected()
 {
     bool ret = false;
@@ -89,30 +71,39 @@ long LaunchVehicle::predictApogee()
     return predicted_apogee;
 }
 
+int LaunchVehicle::isWithinImmediateDeploymentRange()
+{
+    bool ret = -1;
+
+    Data data = imu->poll(data);
+
+    if (data.altimeterData.altitude >= IMMEDIATE_DEPLOYMENT_LOWER_BOUND)
+    {
+        ret = 1;
+    }
+    
+    return ret;
+}
+
 int LaunchVehicle::isWithinPartialDeploymentRange()
 {
     int ret = -1; // Bias toward no action
 
-    // TODO: Implement 
+    float predicted_apogee = predictApogee();
 
-    // float predicted_apogee = predictApogee();
-
-    // if (predicted_apogee < PARTIAL_DEPLOYMENT_LOWER_BOUND)
-    // {
-    //     // Predicted is less than target apogee (do nothing)
-    //     ret = -1;
-    // }
-    // else if (predicted_apogee > PARTIAL_DEPLOYMENT_UPPER_BOUND) 
-    // {
-    //     // Predicted apogee is greater than target apogee 
-    //     ret = 1;
-    // }
-    // else if ((predicted_apogee >= PARTIAL_DEPLOYMENT_LOWER_BOUND) && 
-    //          (predicted_apogee <= PARTIAL_DEPLOYMENT_UPPER_BOUND))
-    // {
-    //     // Predicted apogee close enough to target apogee
-    //     ret = 0;
-    // }
+    if (predicted_apogee < PARTIAL_DEPLOYMENT_LOWER_BOUND)
+    {
+        ret = -1;   // Predicted apogee < target apogee (do nothing)
+    }
+    else if ((predicted_apogee >= PARTIAL_DEPLOYMENT_LOWER_BOUND) && 
+             (predicted_apogee <= PARTIAL_DEPLOYMENT_UPPER_BOUND))
+    {
+        ret = 0;    // Predicted apogee = target apogee (do nothing)
+    }
+    else if (predicted_apogee > PARTIAL_DEPLOYMENT_UPPER_BOUND) 
+    {
+        ret = 1;    // Predicted apogee > target apogee (trigger deployment)
+    }
 
     return ret;
 }

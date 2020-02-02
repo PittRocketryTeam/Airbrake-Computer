@@ -2,6 +2,9 @@
 #define __AIRBRAKE_HPP__
 
 #include "constants.hpp"
+#include "board.hpp"
+#include "BasicStepperDriver.h"
+
 
 class Airbrake
 {
@@ -9,6 +12,8 @@ class Airbrake
 
         Airbrake();
         ~Airbrake();
+
+        void init();
 
         /******************************************************************************************
          * Sets the absolute deployment percentage of the air brake.
@@ -41,6 +46,8 @@ class Airbrake
          * Internal record of current air brake deployment percentage, between 0 and 100 inclusive.
          *****************************************************************************************/
         int deployment_percentage;
+
+        BasicStepperDriver motor; 
 
 };
 

@@ -32,7 +32,7 @@ void setup()
     {
         if (VERBOSE) { Serial.println("MANUAL MODE: Using mocked sensors"); }
         
-        // Set up mock sensor with data file path on micro SD
+        // Set up mock sensors
         MockHelper mockHelper(LOGFILE);
         mockHelper.init();
     
@@ -52,6 +52,8 @@ void setup()
 
         vehicle.init(&imu, &altimeter);
     }    
+
+    airbrake.init();
 }
 /**************************************************************************************************
  * State machine loop
@@ -105,11 +107,14 @@ void loop()
                 break;
             }
 
-            if (vehicle.isWithinImmediateDeploymentRange()) // Check for immediate deployment
+            if (vehicle.isWithinImmediateDeploymentRange() > 0) // Check for immediate deployment
             {
-                airbrake.deployCompletely();        // Deploy air brake completely
-                while (!vehicle.descentDetected()); // Wait until descent is detected
-                state = DESCENT_DETECTED;           // Switch to descent detected state
+                airbrake.deployCompletely();  // Deploy air brake completely
+                while (!vehicle.descentDetected())
+                {   
+                    // Wait until descent is detected
+                } 
+                state = DESCENT_DETECTED;     // Switch to descent detected state
                 break;
             }
 
@@ -117,7 +122,8 @@ void loop()
             if (vehicle.isWithinPartialDeploymentRange() > 0) // Check if predicted apogee > target apogee
             {
                 int percent_deployment = vehicle.calculatePercentDeployment(); // Calculate action
-                airbrake.setAbsoluteDeployment(percent_deployment); // Deploy percent air brake 
+                airbrake.setAbsoluteDeployment(percent_deployment);            // Deploy percent air brake 
+                break;
             }
 
             break;
@@ -135,7 +141,10 @@ void loop()
 
             if (VERBOSE) { Serial.println("State: TERMINATION"); }
             
-            while (true); // Infinite loop (state machine termination)
+            while (true)
+            {
+                // Infinite loop (state machine termination)
+            } 
 
             break;
 

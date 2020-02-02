@@ -1,5 +1,9 @@
 #ifdef FLIGHT_BUILD // constants for flight build
 
+    #define MOTOR_STEPS 200
+    #define RPM 120
+    #define MICROSTEPS 1
+
     #define LOGFILE (char*)""
     #define VERBOSE false        // Disable verbosity
     #define MANUAL_MODE false    // Use real sensors
@@ -95,6 +99,10 @@
    
 #else       // constants for test build
     
+    #define MOTOR_STEPS 200
+    #define RPM 120
+    #define MICROSTEPS 1
+
     #define LOGFILE (char*)"lessdata.csv"
     #define VERBOSE true        // Enable verbosity
     #define MANUAL_MODE true    // Use mock sensors

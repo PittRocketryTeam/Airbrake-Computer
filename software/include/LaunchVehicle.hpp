@@ -116,7 +116,7 @@ class LaunchVehicle
          * 
          * @return -1 if below range, 0 if within range, 1 if above range.
          *****************************************************************************************/
-        bool isWithinImmediateDeploymentRange();
+        int isWithinImmediateDeploymentRange();
 
         /******************************************************************************************
          * Within Range for Incremental Partial Deployment
