@@ -9,7 +9,7 @@
 
 #include "constants.hpp"
 
-#define k_rows 1500
+#define k_rows 1301 // If this exceeds ~1500, teensy will get angry and fail to boot
 #define k_bytes_per_line 96
 
 #define BUILTIN_SDCARD 254
@@ -19,7 +19,7 @@ class MockHelper
     public:
 
         MockHelper();
-        MockHelper(char* data_filename);
+    MockHelper(char* data_filename);
 
         virtual ~MockHelper();
 

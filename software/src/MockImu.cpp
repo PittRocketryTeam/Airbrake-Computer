@@ -31,7 +31,6 @@ Data MockImu::read(Data data)
 
 Data MockImu::poll(Data data)
 {
-    Serial.println("Inside mock imu poll");
     // Set local data from file
     data = mockHelper.getNextDataPoint(data);
 
