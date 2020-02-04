@@ -35,6 +35,16 @@ TODO: Add description
 
 ### 2.4: SA-4: Apogee Prediction
 
+#### 2.4.1. General Approach
+
+This algorithm accepts data points (time in seconds and altitude in feet) collected since motor burnout was detected. It uses the least-squares method to fit a second degree polynomial to the data points, which it uses to generate a three coefficients. It then determines the maximum of this second degree polynomial, which it returns as the predicted apogee. 
+
+#### 2.4.2. Assumptions
+
+* This algorithm assumes that launch and motor burnout have already been detected.
+
+* This algorithm assumes that sufficient data has been collected since motor burnout to make a reasonable estimate (this is accomplished in the data acquision threshold check (daqThresholdMet()). 
+
 TODO: Add description
 
 ### 2.5: SA-5: Determination of Descent Detection
