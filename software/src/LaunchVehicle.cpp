@@ -56,9 +56,42 @@ bool LaunchVehicle::daqThresholdMet()
 bool LaunchVehicle::descentDetected()
 {
     bool ret = false;
+    Data data = altimeter->poll(data); 
+    long altitude = data.altimeterData.altitude; 
+    //CHECK: Has the highest_alt variable been initialized to a value? If this is the
+    //first time executing the descentDetected code, set the highest_alt variable to 
+    //the first altitude reading. 
+    if(!hasMax)
+    {
+        highest_alt = altitude;
+        hasMax = true; //Setting the hasMax flag to true as the highest_alt variable has been initialized.  
+    }
+    if(altitude < highest_alt){
+        //Let's say here that if multiple data points have decreased in altitude in a row, then increment
+        //isConsistent variable. The max value of of isConsistent needs to be refined through testing. 
+        //Basically the variable is verifying that the launch vehicle is indeed descending after multiple
+        //iterations.
+        if(isConsistent < 10)
+        {
+            isConsistent += 1; //incrementing the counter means altitude is decreasing 
+        }
+        else if(isConsistent == 10)
+        {
+            //After multiple iterations, the altimeter data has been consistently decreasing to
+            //the point that the isConsistent variable has reached its threshold. 
+            ret = true; //Descent has been detected
+        }
+    }
+    else if(altitude > highest_alt)
+    {
+        isConsistent = 0; //The data shows that there has been an increase in altitude so reset the counter 
+        highest_alt = altitude; 
+    }
 
-    // TODO: Implement
-
+    // TODO: Look for false positive cases 
+    //      (a) When the rocket is rotating rapidly 
+    //      (b) Noisy altimeter data 
+    //   -Find a way to determine descent with the IMU data --have to research this--
     return ret;
 }
 

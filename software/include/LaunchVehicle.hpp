@@ -19,6 +19,12 @@ class LaunchVehicle
         LaunchVehicle();
         ~LaunchVehicle();
 
+        /************************************************ Globals ****************************************/
+        long highest_alt;       // Keeps track of the highest recorded altitude
+        bool hasMax;            // A flag that indicates that highest_alt been initialized
+        int isConsistent;       // A counter that will increment each time a descent has been detected
+        /*************************************************************************************************/
+        
         /******************************************************************************************
          * Initialize vehicle and sensors. Accepts an IMU and Altimeter objects so these sensors
          * can be mocked.
