@@ -1,6 +1,10 @@
 #ifndef __LaunchVehicle_HPP__
 #define __LaunchVehicle_HPP__
 
+#include <tuple>
+#include <vector>
+#include <stdlib.h>
+
 #include "constants.hpp"
 
 #include "AbstractImu.hpp"
@@ -44,7 +48,7 @@ class LaunchVehicle
         /******************************************************************************************
          * SA-2: Motor Burnout Detection Sub-Algorithm
          * 
-         * Author(s): TBD
+         * Author(s): Rachel Misbin
          * 
          * Determines whether or not motor burnout has completed. Motor burnout is the moment after
          * which the vehicle's motor is no longer firing. 
@@ -70,13 +74,13 @@ class LaunchVehicle
         /******************************************************************************************
          * SA-4: Apogee Prediction Sub-Algorithm
          * 
-         * Author(s): Fernando Tabares
+         * Author(s): Fernando Tabares & Rachel Misbin
          * 
          * Predicts the current apogee based on readings from the altimeter and IMU. 
          * 
          * @return the current predicted apogee
          *****************************************************************************************/
-        long predictApogee();
+        float predictApogee();
 
         /******************************************************************************************
          * SA-5: Descent Detection Sub-Algorithm
@@ -138,32 +142,58 @@ class LaunchVehicle
         /******************************************************************************************
          * Reads data from both the IMU and altimeter and packages in a single Data object.
          * 
-         * @param data the data struct to populate and return
          * @return Data most recent reading from altimeter and IMU
          *****************************************************************************************/
-        Data readFromSensors(Data data);
+        Data readFromSensors();
 
     private:
 
         /******************************************************************************************
          * Checks if the I-6 height data acquisition threshold has been met.
          * 
+         * @param current_altitude the vehicle's current altitude
          * @return bool true if the height data acquisition threshold has been met, false otherwise
          *****************************************************************************************/
-        bool meetsDaqHeightThreshold();
+        bool meetsDaqHeightThreshold(float current_altitude);
 
         /******************************************************************************************
          * Checks if the I-7 data quantity data acquisition threshold has been met.
          * 
          * @return bool true if the height data acquisition threshold has been met, false otherwise
          *****************************************************************************************/
-        bool meetsDaqDataPointThreshold();
+        bool meetsDaqDataPointThreshold(int points_read_since_burnout);
+
+        /******************************************************************************************
+         * Generates coefficients to fit a set of data points using a least-squares approach. 
+         * Coefficients are set in coeffs.
+         * 
+         * y = a0 + a1*x + a2*x^2
+         * 
+         * @param x vector of timestamps
+         * @param y vector of altitudes
+         * @param coeffs generated coefficients [a0, a1, a2]
+         *****************************************************************************************/
+        void polyFit(std::vector<float> &x, std::vector<float> &y, std::vector<float> &coeffs);
+
+        /******************************************************************************************
+         * Finds global maximum of a second degree polynomial given coefficients.
+         * 
+         * y = a0 + a1*x + a2*x^2
+         * 
+         * @param coeffs generated coefficients [a0, a1, a2]
+         * @return global maximum
+         *****************************************************************************************/
+        float findGlobalMax(std::vector<float> &coeffs);
 
         AbstractImu* imu;
         AbstractAltimeter* altimeter;
 
+        std::vector<long int> timestamps;
+        std::vector<float> altitudes;
+
+        // Timestamped_Altitutes_t timestamped_altitudes;
+
         uint64_t altitude_of_burnout;
-        uint64_t data_points_read_at_burnout;
 };
 
 #endif // __LaunchVehicle_HPP__
