@@ -138,9 +138,15 @@ void init(AbstractImu* i, AbstractAltimeter* a);
  
 ## 7. Dev Environment Setup
 
+### 7.1. PlatformIO
 All development used the PlatformIO extension for Visual Studio Code. Additionally, you need to download the [Teensyduino addon](https://www.pjrc.com/teensy/td_download.html) in order to upload to the Teensy. 
 
 To build the project, run `pio run`. To upload the project to a Teensy board, run `platformio run --target upload`. To view serial output, run `platformio device monitor`.
+
+### 7.2. Test Environment Setup
+1. Make sure `MANUAL_MODE` is set to true.
+2. Make sure you have a micro SD card with the data file specified by `LOGFILE` on the teensy.
+3. Make sure the micro SD is in the teensy.
 
 ## 8. Relevant Links
 
