@@ -62,10 +62,13 @@ bool LaunchVehicle::launchDetected()
         {
             if(data.altimeterData.altitude >= 30.00)
             {
+                if(VERBOSE) { Serial.println("Launch Detected"); }
                 return true;
             }
         }
     }
+
+    if(VERBOSE) { Serial.println("Launch Detected"); }
 
     return true;//assumes if the rocket is above 100m high, that it is launching. If it isn't launching, it'll just stay in the loop
 }
