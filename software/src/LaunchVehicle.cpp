@@ -1,4 +1,5 @@
 #include "LaunchVehicle.hpp"
+#include <cmath>// std::abs
 
 LaunchVehicle::LaunchVehicle() :
     altitude_of_burnout(0),
@@ -26,21 +27,43 @@ void LaunchVehicle::init(AbstractImu* i, AbstractAltimeter* a)
     if (VERBOSE) { Serial.println("Vehicle init complete"); }
 }
 
+bool LaunchVehicle::onPad()
+{
+    //must fill in detection
+    return true;
+}
+
 bool LaunchVehicle::launchDetected()
 {
-    bool ret = false, simple = true;
+    bool ret = false;
+    Data data;
+    uint8_t accelCounter = 0;
 
-    if(simple){
-        //combine altitude, pressure, and acceleration data to produce a threshold that the system should pass to be considered launching
-        //typical launch acceleration from our motor is -39.93. Ocurrs at 309 in loggylog.csv from december
-            //col H is acceleration, col D is altitude, 
-        //if acceleration constant and over around 35m/s^2 for a short period of time (5 cycles), then proceed
-        //after accel, look at altitude. Keep a mean, if new data is over mean by a certain amount == launched
-            //maybe look to detect the initial subbtle up and down of the data (best option?) -- best for everything else
-            //maybe you keep track of altitude during accel, see the big jump while checking for conintuity there? -- best for air brake
+    if(VERBOSE) {
+        data = readFromSensors(data);
+        Serial.printf("Acceleration: %f", data.imuData.acceleration_y);
     }
 
-    return ret;
+    //typical launch acceleration from our motor is -39.93. Ocurrs at 309 in loggylog.csv from december (col H is acceleration, col D is altitude)
+        //if acceleration constant and over around 35m/s^2 for a short period of time (5 cycles), then proceed
+    //after accel, look at altitude. Keep a mean, if new data is over mean by a certain amount == launched
+        //maybe look to detect the initial subbtle up and down of the data (best option?) -- best for everything else
+        //maybe you keep track of altitude during accel, see the big jump while checking for conintuity there? -- best for air brake
+    for(data = readFromSensors(data); data.altimeterData.altitude < 100.00; data = readFromSensors(data)){//while under 100 meters -- 100 meters is the fail safe, if haven't detect launch by now, we're certainly lanuching
+        if(std::abs(data.imuData.acceleration_y) > 38.00 && accelCounter < 5)
+        {
+            accelCounter++;
+        } 
+        else if(std::abs(data.imuData.acceleration_y) > 38.00 && accelCounter >= 5)
+        {
+            if(data.altimeterData.altitude >= 30.00)
+            {
+                return true;
+            }
+        }
+    }
+
+    return true;//assumes that if the rocket is above 100m high, that it is launching
 }
 
 bool LaunchVehicle::motorBurnoutDetected()

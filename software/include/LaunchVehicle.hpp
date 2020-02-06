@@ -159,6 +159,14 @@ class LaunchVehicle
          *****************************************************************************************/
         bool meetsDaqDataPointThreshold();
 
+        /******************************************************************************************
+         * Determines whether the rocket has been placed on the pad or not. This will aid data and
+         * power management.
+         * 
+         * @return bool true if the rocket is on the pad, false otherwise
+         *****************************************************************************************/
+        bool onPad();
+
         AbstractImu* imu;
         AbstractAltimeter* altimeter;
 
