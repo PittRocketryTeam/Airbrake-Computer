@@ -112,7 +112,15 @@ int LaunchVehicle::calculatePercentDeployment()
 {
     int percent_deployment = 0;
 
-    // TODO: Implement
+    float err = predictApogee() - TARGET_APOGEE;
+    if (err <= 0)
+    {
+        return 0;
+    }
+
+    float weight = 0.02; // TODO TUNE VALUE
+
+    percent_deployment = (int)fmaxf(err * weight, 4) * 25;
     
     return percent_deployment;
 }
