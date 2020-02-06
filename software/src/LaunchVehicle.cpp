@@ -37,7 +37,7 @@ bool LaunchVehicle::launchDetected()
 {
     bool ret = false;
     Data data;
-    uint8_t accelCounter = 0;
+    uint8_t accelCounter = 0, margError = 1.5;//count for continuous acceleartion
 
     if(VERBOSE) {
         data = readFromSensors(data);
@@ -50,11 +50,15 @@ bool LaunchVehicle::launchDetected()
         //maybe look to detect the initial subbtle up and down of the data (best option?) -- best for everything else
         //maybe you keep track of altitude during accel, see the big jump while checking for conintuity there? -- best for air brake
     for(data = readFromSensors(data); data.altimeterData.altitude < 100.00; data = readFromSensors(data)){//while under 100 meters -- 100 meters is the fail safe, if haven't detect launch by now, we're certainly lanuching
-        if(std::abs(data.imuData.acceleration_y) > 38.00 && accelCounter < 5)
+        if((std::abs(data.imuData.acceleration_y) > 38.50 || std::abs(data.imuData.acceleration_y) + margError > 38.50) && accelCounter < 5)
         {
             accelCounter++;
-        } 
-        else if(std::abs(data.imuData.acceleration_y) > 38.00 && accelCounter >= 5)
+        }
+        else if(std::abs(data.imuData.acceleration_y) + margError < 38.50)//acceleration was just a fluke, and not the constant acceleration the motor would provide
+        {
+            accelCounter = 0;
+        }
+        if(accelCounter >= 5)
         {
             if(data.altimeterData.altitude >= 30.00)
             {
@@ -63,7 +67,7 @@ bool LaunchVehicle::launchDetected()
         }
     }
 
-    return true;//assumes that if the rocket is above 100m high, that it is launching
+    return true;//assumes if the rocket is above 100m high, that it is launching. If it isn't launching, it'll just stay in the loop
 }
 
 bool LaunchVehicle::motorBurnoutDetected()
