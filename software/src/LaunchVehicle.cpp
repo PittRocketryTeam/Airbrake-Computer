@@ -28,9 +28,17 @@ void LaunchVehicle::init(AbstractImu* i, AbstractAltimeter* a)
 
 bool LaunchVehicle::launchDetected()
 {
-    bool ret = false;
+    bool ret = false, simple = true;
 
-    // TODO: Implement
+    if(simple){
+        //combine altitude, pressure, and acceleration data to produce a threshold that the system should pass to be considered launching
+        //typical launch acceleration from our motor is -39.93. Ocurrs at 309 in loggylog.csv from december
+            //col H is acceleration, col D is altitude, 
+        //if acceleration constant and over around 35m/s^2 for a short period of time (5 cycles), then proceed
+        //after accel, look at altitude. Keep a mean, if new data is over mean by a certain amount == launched
+            //maybe look to detect the initial subbtle up and down of the data (best option?) -- best for everything else
+            //maybe you keep track of altitude during accel, see the big jump while checking for conintuity there? -- best for air brake
+    }
 
     return ret;
 }
