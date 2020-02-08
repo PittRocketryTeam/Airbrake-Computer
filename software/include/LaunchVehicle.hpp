@@ -5,6 +5,8 @@
 #include <vector>
 #include <stdlib.h>
 
+#include "TimeLib.h"
+
 #include "constants.hpp"
 
 #include "AbstractImu.hpp"
@@ -185,11 +187,15 @@ class LaunchVehicle
          *****************************************************************************************/
         float findGlobalMax(std::vector<float> &coeffs);
 
+        static time_t getTeensy3Time();
+
         AbstractImu* imu;
         AbstractAltimeter* altimeter;
 
         std::vector<long int> timestamps;
         std::vector<float> altitudes;
+
+        bool RTC_set_successfully;
 
         // Timestamped_Altitutes_t timestamped_altitudes;
 

@@ -1,7 +1,8 @@
 #include "LaunchVehicle.hpp"
 
 LaunchVehicle::LaunchVehicle() :
-    altitude_of_burnout(0)
+    altitude_of_burnout(0),
+    RTC_set_successfully(false)
 {
 
 }
@@ -22,6 +23,11 @@ void LaunchVehicle::init(AbstractImu* i, AbstractAltimeter* a)
     imu->init();
     delay(1000);
 
+    // Initialize RTC
+    setSyncProvider(getTeensy3Time);
+    delay(100);
+    RTC_set_successfully = (timeStatus() == timeSet);
+
     if (VERBOSE) { Serial.println("Vehicle init complete"); }
 }
 
@@ -38,8 +44,19 @@ bool LaunchVehicle::motorBurnoutDetected()
 {
     bool ret = false;
 
-    // TODO: Implement
+    // Three checks for motor burnout to be detected: 
+    // (1) A certain amount of time has passed (burn time of motor), AND
+    // (2) Altitude is greater than expected motor burnout altitude, AND
+    // (3) Vehicle is no longer accelerating up/
 
+    // check for decrease in acceleration 
+    Data before = readFromSensors();
+    delay(50);
+    Data after = readFromSensors();
+    bool criteria_3 = (before.imuData.acceleration_z < after.imuData.acceleration_z);
+
+    ret = criteria_3;
+        
     if (ret)
     {
         Data data = readFromSensors();
@@ -292,4 +309,9 @@ float LaunchVehicle::findGlobalMax(std::vector<float> &coeffs)
     global_max = c + (b * global_max_x) + (c * global_max_x * global_max_x);
 
     return global_max;
+}
+
+static time_t LaunchVehicle::getTeensy3Time()
+{
+    return Teensy3Clock.get();
 }
