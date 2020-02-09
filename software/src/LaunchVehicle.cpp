@@ -47,13 +47,13 @@ bool LaunchVehicle::launchDetected()
     data = readFromSensors(data);
     if(data.altimeterData.altitude < 100.00)
     {
-        if(VERBOSE) { Serial.printf("%d, Accel: %.5f, Alt: %.5f, accelCounter: %d\n", data.timestamp, data.imuData.acceleration_y, data.altimeterData.altitude, accelCounter); }
+        if(VERBOSE) { Serial.printf("%d, Accel: %.5f, Alt: %.5f, accelCounter: %d\n", data.timestamp, data.imuData.acceleration_x, data.altimeterData.altitude, accelCounter); }
         
-        if((std::abs(data.imuData.acceleration_y) > 38.50 || std::abs(data.imuData.acceleration_y) + margError > 38.50) && accelCounter < 5)
+        if((std::abs(data.imuData.acceleration_x) > 38.50 || std::abs(data.imuData.acceleration_x) + margError > 38.50) && accelCounter < 5)
         {
             accelCounter++;
         }
-        else if(std::abs(data.imuData.acceleration_y) + margError < 38.50)//acceleration was just a fluke, and not the constant acceleration the motor would provide
+        else if(std::abs(data.imuData.acceleration_x) + margError < 38.50)//acceleration was just a fluke, and not the constant acceleration the motor would provide
         {
             accelCounter = 0;
         }
