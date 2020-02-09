@@ -75,7 +75,7 @@ int LaunchVehicle::isWithinImmediateDeploymentRange()
 {
     bool ret = -1;
 
-    Data data = imu->poll(data);
+    Data data = readFromSensors();
 
     if (data.altimeterData.altitude >= IMMEDIATE_DEPLOYMENT_LOWER_BOUND)
     {
