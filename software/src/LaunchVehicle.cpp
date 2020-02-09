@@ -82,6 +82,7 @@ float LaunchVehicle::predictApogee()
     // Find coefficients
     std::vector<float> coeffs;
     std::vector<float> timestamps_floats(timestamps.begin(), timestamps.end());
+
     polyFit(timestamps_floats, altitudes, coeffs);
 
     // Find global maximum 
@@ -111,8 +112,8 @@ bool LaunchVehicle::daqThresholdMet()
     // Number of data points read since burnout
     int points = timestamps.size();
 
-    ret = (meetsDaqDataPointThreshold(points) && 
-           meetsDaqHeightThreshold(data.altimeterData.altitude));
+    ret = (meetsDaqDataPointThreshold(points) 
+           && meetsDaqHeightThreshold(data.altimeterData.altitude));
 
     return ret;
 }
@@ -121,7 +122,7 @@ int LaunchVehicle::isWithinImmediateDeploymentRange()
 {
     bool ret = -1;
 
-    Data data = imu->poll(data);
+    Data data = readFromSensors();
 
     if (data.altimeterData.altitude >= IMMEDIATE_DEPLOYMENT_LOWER_BOUND)
     {
@@ -157,10 +158,17 @@ int LaunchVehicle::isWithinPartialDeploymentRange()
 Data LaunchVehicle::readFromSensors()
 {
     Data data;
-    data = altimeter->poll(data);
 
-    data = imu->poll(data);
-
+    if (MANUAL_MODE)
+    {
+        data = altimeter->poll(data);
+    }
+    else
+    {
+        data = altimeter->poll(data);
+        data = imu->poll(data);
+    }
+    
     return data;
 }
 
@@ -303,7 +311,6 @@ float LaunchVehicle::findGlobalMax(std::vector<float> &coeffs)
     float c = coeffs.at(0), b = coeffs.at(1), a = coeffs.at(2);
     
     // If a > 0, parabola opens up
-
     float global_max_x = -b / (2 * a);
 
     global_max = c + (b * global_max_x) + (c * global_max_x * global_max_x);
