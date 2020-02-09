@@ -40,9 +40,6 @@ bool LaunchVehicle::onPad()
 
 bool LaunchVehicle::launchDetected()
 {
-    Data data;
-    uint8_t accelCounter = 0, margError = 1.5;//count for continuous acceleartion
-
     //typical launch acceleration from our motor is -39.93. Ocurrs at 309 in loggylog.csv from december (col H is acceleration, col D is altitude)
         //if acceleration constant and over around 35m/s^2 for a short period of time (5 cycles), then proceed
     //after accel, look at altitude. Keep a mean, if new data is over mean by a certain amount == launched

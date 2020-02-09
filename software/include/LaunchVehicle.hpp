@@ -202,6 +202,9 @@ class LaunchVehicle
 
         std::vector<long int> timestamps;
         std::vector<float> altitudes;
+        
+        Data data;
+        uint8_t accelCounter = 0, margError = 1.5;//count for continuous acceleartion
 
         bool RTC_set_successfully;
 
