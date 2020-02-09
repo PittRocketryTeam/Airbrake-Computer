@@ -40,6 +40,7 @@ bool LaunchVehicle::onPad()
 
 bool LaunchVehicle::launchDetected()
 {
+    // comments need to be < 100 characters long -rachel
     //typical launch acceleration from our motor is -39.93. Ocurrs at 309 in loggylog.csv from december (col H is acceleration, col D is altitude)
         //if acceleration constant and over around 35m/s^2 for a short period of time (5 cycles), then proceed
     //after accel, look at altitude. Keep a mean, if new data is over mean by a certain amount == launched
@@ -47,25 +48,30 @@ bool LaunchVehicle::launchDetected()
         //maybe you keep track of altitude during accel, see the big jump while checking for conintuity there? -- best for air brake
     //for(data = readFromSensors(data); data.altimeterData.altitude < 100.00; data = readFromSensors(data))//while under 100 meters -- 100 meters is the fail safe, if haven't detect launch by now, we're certainly lanuching
     data = readFromSensors();
-    if(data.altimeterData.altitude < 100.00)
+    if(data.altimeterData.altitude < 100.00) // this should be a constant -rachel
     {
-        if(VERBOSE) { Serial.printf("%d, Accel: %.5f, Alt: %.5f, accelCounter: %d\n", data.timestamp, data.imuData.acceleration_x, data.altimeterData.altitude, accelCounter); }
+        if(VERBOSE) { Serial.printf("%d, Accel: %.5f, Alt: %.5f, accelCounter: %d\n", 
+                data.timestamp, data.imuData.acceleration_x, data.altimeterData.altitude, accelCounter); }
         
+        // remove margError check -matt
+        // relies on set "up" axis -rachel
+        // set 38.50 value relative to gravity + margin of error -matt
+        // make counter a timer instead used from global time -everyone
         if((std::abs(data.imuData.acceleration_x) > 38.50 || std::abs(data.imuData.acceleration_x) + margError > 38.50) && accelCounter < 5)
         {
             accelCounter++;
         }
-        else if(std::abs(data.imuData.acceleration_x) + margError < 38.50)//acceleration was just a fluke, and not the constant acceleration the motor would provide
+        else if (std::abs(data.imuData.acceleration_x) + margError < 38.50)//acceleration was just a fluke, and not the constant acceleration the motor would provide
         {
             accelCounter = 0;
         }
         
-        if(accelCounter >= 5)
-        {
-            if(data.altimeterData.altitude >= 30.00)
+        if(accelCounter >= 5) // accelcounter should be a constant -rachel
+        { // combine nested if statements -rachel
+            if(data.altimeterData.altitude >= 30.00) // should be a constant -rachel
             {
                 if(VERBOSE) { Serial.println("Launch Detected"); }
-                return true;
+                return true; // move to return variable -rachel
             }
         }
         
@@ -75,8 +81,7 @@ bool LaunchVehicle::launchDetected()
     {
         if(VERBOSE) { Serial.println("Launch Detected at 100m"); }
         return true;
-    }
-    
+    }   
 }
 
 bool LaunchVehicle::motorBurnoutDetected()
