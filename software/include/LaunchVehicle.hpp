@@ -138,10 +138,9 @@ class LaunchVehicle
         /******************************************************************************************
          * Reads data from both the IMU and altimeter and packages in a single Data object.
          * 
-         * @param data the data struct to populate and return
          * @return Data most recent reading from altimeter and IMU
          *****************************************************************************************/
-        Data readFromSensors(Data data);
+        Data readFromSensors();
 
     private:
 
@@ -158,6 +157,14 @@ class LaunchVehicle
          * @return bool true if the height data acquisition threshold has been met, false otherwise
          *****************************************************************************************/
         bool meetsDaqDataPointThreshold();
+
+        /******************************************************************************************
+         * Determines whether the rocket has been placed on the pad or not. This will aid data and
+         * power management.
+         * 
+         * @return bool true if the rocket is on the pad, false otherwise
+         *****************************************************************************************/
+        bool onPad();
 
         AbstractImu* imu;
         AbstractAltimeter* altimeter;

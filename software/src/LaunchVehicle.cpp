@@ -117,12 +117,18 @@ int LaunchVehicle::calculatePercentDeployment()
     return percent_deployment;
 }
 
-Data LaunchVehicle::readFromSensors(Data data)
+Data LaunchVehicle::readFromSensors()
 {
-    data = altimeter->poll(data);
-
-    data = imu->poll(data);
-
+    Data data;
+    if (MANUAL_MODE)
+    {
+        data = altimeter->poll(data);
+    }
+    else
+    {
+        data = altimeter->poll(data);
+        data = imu->poll(data);
+    }
     return data;
 }
 
@@ -130,8 +136,7 @@ bool LaunchVehicle::meetsDaqHeightThreshold()
 {
     bool ret = false;
 
-    Data data;
-    data = altimeter->poll(data);
+    Data data = readFromSensors();
 
     uint64_t diff = data.altimeterData.altitude - altitude_of_burnout;
 
