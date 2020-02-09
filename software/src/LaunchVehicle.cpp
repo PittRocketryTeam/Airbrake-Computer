@@ -74,13 +74,13 @@ int LaunchVehicle::calculatePercentDeployment()
 
 float LaunchVehicle::predictApogee()
 {
-    float predicted_apogee = 0.0;
+    float predicted_apogee = 0.0; // add some checks on prediction to make sure it's reasonable/realistic -patrick
     
     // Find coefficients
-    std::vector<float> coeffs;
+    std::vector<float> coeffs; // consider interpolating to increase quantity of data -- see airbrake sim -patrick
     std::vector<float> timestamps_floats(timestamps.begin(), timestamps.end());
 
-    polyFit(timestamps_floats, altitudes, coeffs);
+    polyFit(timestamps_floats, altitudes, coeffs); // understand this better -rachel
 
     // Find global maximum 
     predicted_apogee = findGlobalMax(coeffs);
