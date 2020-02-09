@@ -89,7 +89,7 @@ int LaunchVehicle::isWithinPartialDeploymentRange()
 {
     int ret = -1; // Bias toward no action
 
-    float predicted_apogee = predictApogee();
+    float predicted_apogee = predictApogee(); // make this private-class scoped so deployment incrementation can use it -rachel
 
     if (predicted_apogee < PARTIAL_DEPLOYMENT_LOWER_BOUND)
     {
@@ -112,15 +112,15 @@ int LaunchVehicle::calculatePercentDeployment()
 {
     int percent_deployment = 0;
 
-    float err = predictApogee() - TARGET_APOGEE;
-    if (err <= 0)
+    float err = predictApogee() - TARGET_APOGEE;    // use private-scoped prediction -rachel
+    if (err <= 0)   // flip this -rachel
     {
         return 0;
     }
 
-    float weight = 0.02; // TODO TUNE VALUE
+    float weight = 0.02; // TODO TUNE VALUE // move to constants -rachel
 
-    percent_deployment = (int)fmaxf(err * weight, 4) * 25;
+    percent_deployment = (int)fmaxf(err * weight, 4) * 25; // should be fmin -matt/patrick
     
     return percent_deployment;
 }
