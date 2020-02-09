@@ -1,6 +1,6 @@
 #ifdef FLIGHT_BUILD // constants for flight build
 
-    #define MOTOR_STEPS 200
+    #define STEPS_FOR_100_PERCENT 200
     #define RPM 120
     #define MICROSTEPS 1
 
@@ -99,7 +99,7 @@
    
 #else       // constants for test build
     
-    #define MOTOR_STEPS 200
+    #define STEPS_FOR_100_PERCENT 200
     #define RPM 120
     #define MICROSTEPS 1
 

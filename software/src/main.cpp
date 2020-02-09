@@ -40,7 +40,7 @@ void setup()
         MockImu imu(mockHelper);
         MockAltimeter altimeter(mockHelper);
 
-        vehicle.init(&imu, &altimeter);
+        vehicle.init(&imu, &altimeter); // Consider moving to LaunchVehicle's init -Patrick
     }
     else
     {
@@ -48,7 +48,7 @@ void setup()
 
         // Initialize real sensors
         IMU imu;
-        Altimeter altimeter;
+        Altimeter altimeter; // Consider moving to LaunchVehicle's init -Patrick
 
         vehicle.init(&imu, &altimeter);
     }    

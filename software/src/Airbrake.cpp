@@ -2,7 +2,7 @@
 
 Airbrake::Airbrake():
     deployment_percentage(0),
-    motor(MOTOR_STEPS, M_DIR, M_STEP)
+    motor(STEPS_FOR_100_PERCENT, M_DIR, M_STEP)
 {
 
 }
@@ -22,7 +22,7 @@ void Airbrake::setAbsoluteDeployment(int percent)
     // TODO: Implement
     deployment_percentage = percent;
 
-    // motor.move(MOTOR_STEPS * MICROSTEPS);
+    motor.move(STEPS_FOR_100_PERCENT * MICROSTEPS * (percent/100));
 }
 
 void Airbrake::deployCompletely()

@@ -45,16 +45,18 @@ bool LaunchVehicle::motorBurnoutDetected()
     bool ret = false;
 
     // Three checks for motor burnout to be detected: 
-    // (1) A certain amount of time has passed (burn time of motor), AND
-    // (2) Altitude is greater than expected motor burnout altitude, AND
-    // (3) Vehicle is no longer accelerating up/
+    // (1) A certain amount of time has passed (burn time of motor), AND    // Maybe don't use this (collects less data) -Matt
+    // (3) Vehicle is no longer accelerating up // Focus on this one -everyone
+
+    // Ask sims people to update simulation with new surface area -everyone
 
     // check for decrease in acceleration 
     Data before = readFromSensors();
     delay(50);
     Data after = readFromSensors();
-    bool criteria_3 = (before.imuData.acceleration_z < after.imuData.acceleration_z);
 
+    bool criteria_3 = (before.imuData.acceleration_z < after.imuData.acceleration_z); // Maybe rolling average -Patrick
+    // assert certain orientation of imu -- need to fix the 'up' axis -patric
     ret = criteria_3;
         
     if (ret)
@@ -189,6 +191,7 @@ bool LaunchVehicle::meetsDaqDataPointThreshold(int points_read_since_burnout)
     return ret;
 }
 
+// check with dan about simulator model -Patrick
 void LaunchVehicle::polyFit(std::vector<float> &x, std::vector<float> &y, std::vector<float> &coeffs)
 {
     if (x.size() != y.size())

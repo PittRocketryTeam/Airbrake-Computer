@@ -208,6 +208,8 @@ class LaunchVehicle
         // Timestamped_Altitutes_t timestamped_altitudes;
 
         uint64_t altitude_of_burnout;
+
+        uint64_t data_points_read_at_burnout;
 };
 
 #endif // __LaunchVehicle_HPP__
