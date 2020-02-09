@@ -49,7 +49,7 @@ bool LaunchVehicle::launchDetected()
         //maybe look to detect the initial subbtle up and down of the data (best option?) -- best for everything else
         //maybe you keep track of altitude during accel, see the big jump while checking for conintuity there? -- best for air brake
     //for(data = readFromSensors(data); data.altimeterData.altitude < 100.00; data = readFromSensors(data))//while under 100 meters -- 100 meters is the fail safe, if haven't detect launch by now, we're certainly lanuching
-    data = readFromSensors(data);
+    data = readFromSensors();
     if(data.altimeterData.altitude < 100.00)
     {
         if(VERBOSE) { Serial.printf("%d, Accel: %.5f, Alt: %.5f, accelCounter: %d\n", data.timestamp, data.imuData.acceleration_x, data.altimeterData.altitude, accelCounter); }
