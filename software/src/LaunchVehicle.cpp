@@ -35,21 +35,20 @@ bool LaunchVehicle::onPad()
 
 bool LaunchVehicle::launchDetected()
 {
-    bool ret = false;
     Data data;
     uint8_t accelCounter = 0, margError = 1.5;//count for continuous acceleartion
-
-    if(VERBOSE) {
-        data = readFromSensors(data);
-        Serial.printf("Acceleration: %f", data.imuData.acceleration_y);
-    }
 
     //typical launch acceleration from our motor is -39.93. Ocurrs at 309 in loggylog.csv from december (col H is acceleration, col D is altitude)
         //if acceleration constant and over around 35m/s^2 for a short period of time (5 cycles), then proceed
     //after accel, look at altitude. Keep a mean, if new data is over mean by a certain amount == launched
         //maybe look to detect the initial subbtle up and down of the data (best option?) -- best for everything else
         //maybe you keep track of altitude during accel, see the big jump while checking for conintuity there? -- best for air brake
-    for(data = readFromSensors(data); data.altimeterData.altitude < 100.00; data = readFromSensors(data)){//while under 100 meters -- 100 meters is the fail safe, if haven't detect launch by now, we're certainly lanuching
+    //for(data = readFromSensors(data); data.altimeterData.altitude < 100.00; data = readFromSensors(data))//while under 100 meters -- 100 meters is the fail safe, if haven't detect launch by now, we're certainly lanuching
+    data = readFromSensors(data);
+    if(data.altimeterData.altitude < 100.00)
+    {
+        if(VERBOSE) { Serial.printf("%d, Accel: %.5f, Alt: %.5f, accelCounter: %d\n", data.timestamp, data.imuData.acceleration_y, data.altimeterData.altitude, accelCounter); }
+        
         if((std::abs(data.imuData.acceleration_y) > 38.50 || std::abs(data.imuData.acceleration_y) + margError > 38.50) && accelCounter < 5)
         {
             accelCounter++;
@@ -67,10 +66,11 @@ bool LaunchVehicle::launchDetected()
             }
         }
     }
-
-    if(VERBOSE) { Serial.println("Launch Detected"); }
-
-    return true;//assumes if the rocket is above 100m high, that it is launching. If it isn't launching, it'll just stay in the loop
+    else
+    {
+        return false;
+    }
+    
 }
 
 bool LaunchVehicle::motorBurnoutDetected()
