@@ -68,5 +68,6 @@ void MockHelper::init()
 
 Data MockHelper::getNextDataPoint(Data data)
 {
+    if(VERBOSE) { Serial.printf("Data Index: %d", data_index); }
     return mock_data[data_index++];
 }
