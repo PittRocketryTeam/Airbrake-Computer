@@ -57,6 +57,7 @@ bool LaunchVehicle::launchDetected()
         {
             accelCounter = 0;
         }
+        
         if(accelCounter >= 5)
         {
             if(data.altimeterData.altitude >= 30.00)
@@ -65,10 +66,13 @@ bool LaunchVehicle::launchDetected()
                 return true;
             }
         }
+        
+        return false;//if accelCounter isn't at 5 and rocket isn't above 30m, launch has not been detected
     }
-    else
+    else//if the rocket is above 100m, assume it's launched already
     {
-        return false;
+        if(VERBOSE) { Serial.println("Launch Detected at 100m"); }
+        return true;
     }
     
 }
