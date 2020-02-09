@@ -19,6 +19,7 @@ class LaunchVehicle
         LaunchVehicle();
         ~LaunchVehicle();
 
+        // move to private -rachel
         /************************************************ Globals ****************************************/
         long highest_alt;       // Keeps track of the highest recorded altitude
         bool hasMax;            // A flag that indicates that highest_alt been initialized

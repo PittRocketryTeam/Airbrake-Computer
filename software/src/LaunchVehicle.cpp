@@ -56,7 +56,7 @@ bool LaunchVehicle::daqThresholdMet()
 bool LaunchVehicle::descentDetected()
 {
     bool ret = false;
-    Data data = altimeter->poll(data); 
+    Data data = altimeter->poll(data);  // use readFromSensors() -rachel
     long altitude = data.altimeterData.altitude; 
     //CHECK: Has the highest_alt variable been initialized to a value? If this is the
     //first time executing the descentDetected code, set the highest_alt variable to 
@@ -66,12 +66,13 @@ bool LaunchVehicle::descentDetected()
         highest_alt = altitude;
         hasMax = true; //Setting the hasMax flag to true as the highest_alt variable has been initialized.  
     }
-    if(altitude < highest_alt){
+    if(altitude < highest_alt)
+    {
         //Let's say here that if multiple data points have decreased in altitude in a row, then increment
         //isConsistent variable. The max value of of isConsistent needs to be refined through testing. 
         //Basically the variable is verifying that the launch vehicle is indeed descending after multiple
         //iterations.
-        if(isConsistent < 10)
+        if(isConsistent < 10) // make these constants -rachel
         {
             isConsistent += 1; //incrementing the counter means altitude is decreasing 
         }
