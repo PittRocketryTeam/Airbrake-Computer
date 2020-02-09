@@ -14,15 +14,20 @@ Airbrake::~Airbrake()
 
 void Airbrake::init()
 {
+    Serial.println("inited airbrake");
     motor.begin(RPM, MICROSTEPS);
 }
 
 void Airbrake::setAbsoluteDeployment(int percent)
 {
+    Serial.println("running backward");
     // TODO: Implement
     deployment_percentage = percent;
 
-    // motor.move(MOTOR_STEPS * MICROSTEPS);
+    // Negative motor steps yields CCW when looking at motor
+    // Positive motor steps yields CW when looking at motor
+
+    motor.move(MOTOR_STEPS * MICROSTEPS * (percent/100.00));
 }
 
 void Airbrake::deployCompletely()

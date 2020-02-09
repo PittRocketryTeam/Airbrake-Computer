@@ -1,8 +1,8 @@
 #include "LaunchVehicle.hpp"
 
 LaunchVehicle::LaunchVehicle() :
-    altitude_of_burnout(0),
-    RTC_set_successfully(false)
+    RTC_set_successfully(false),
+    altitude_of_burnout(0)
 {
 
 }
@@ -33,11 +33,7 @@ void LaunchVehicle::init(AbstractImu* i, AbstractAltimeter* a)
 
 bool LaunchVehicle::launchDetected()
 {
-    bool ret = false;
-
-    // TODO: Implement
-
-    return ret;
+   return false;
 }
 
 bool LaunchVehicle::motorBurnoutDetected()
@@ -53,6 +49,7 @@ bool LaunchVehicle::motorBurnoutDetected()
     Data before = readFromSensors();
     delay(50);
     Data after = readFromSensors();
+    if(VERBOSE) { Serial.printf("Time: %d, Accel_z: %.5f, Alt: %.5f, accelCounter: %d\n", before.timestamp, before.imuData.acceleration_z, before.altimeterData.altitude); }
     bool criteria_3 = (before.imuData.acceleration_z < after.imuData.acceleration_z);
 
     ret = criteria_3;

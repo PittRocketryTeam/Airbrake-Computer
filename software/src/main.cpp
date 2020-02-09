@@ -103,6 +103,7 @@ void loop()
 
             if (vehicle.descentDetected()) // Check for descent
             {
+                // if (VERBOSE) { Seria}
                 state = DESCENT_DETECTED;
                 break;
             }
