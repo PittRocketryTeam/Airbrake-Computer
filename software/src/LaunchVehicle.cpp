@@ -310,7 +310,7 @@ float LaunchVehicle::findGlobalMax(std::vector<float> &coeffs)
     // If a > 0, parabola opens up
     float global_max_x = -b / (2 * a);
 
-    global_max = c + (b * global_max_x) + (c * global_max_x * global_max_x);
+    global_max = c + (b * global_max_x) + (a * global_max_x * global_max_x);
 
     return global_max;
 }
