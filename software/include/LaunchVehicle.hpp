@@ -25,14 +25,14 @@ class LaunchVehicle
         LaunchVehicle();
         ~LaunchVehicle();
 
-        /******************************************************************************************
-         * Initialize vehicle and sensors. Accepts an IMU and Altimeter objects so these sensors
-         * can be mocked.
+         /******************************************************************************************
+         * Initialize vehicle and sensors. Accepts a boolean parameter to determine whether or not 
+         * to use mocked sensors. 
          * 
-         * @param AbstractImu imu object (or mock)
-         * @param AbstractAltimeter altimeter object (or mock)
+         * @param use_mocked_sensors if true, LaunchVehicle will use mocked sensors, otherwise will
+         * use real sensors
          *****************************************************************************************/
-        void init(AbstractImu* i, AbstractAltimeter* a);
+        void init(bool use_mocked_sensors);
         
         /******************************************************************************************
          * SA-1: Launch Detection Sub-Algorithm
@@ -197,6 +197,15 @@ class LaunchVehicle
          *****************************************************************************************/
         bool onPad();
 
+        /******************************************************************************************
+         * Initialize vehicle and sensors. Accepts an IMU and Altimeter objects so these sensors
+         * can be mocked.
+         * 
+         * @param AbstractImu imu object (or mock)
+         * @param AbstractAltimeter altimeter object (or mock)
+         *****************************************************************************************/
+        void init(AbstractImu* i, AbstractAltimeter* a);
+
         AbstractImu* imu;
         AbstractAltimeter* altimeter;
 
@@ -208,6 +217,8 @@ class LaunchVehicle
         // Timestamped_Altitutes_t timestamped_altitudes;
 
         uint64_t altitude_of_burnout;
+
+        uint64_t data_points_read_at_burnout;
 };
 
 #endif // __LaunchVehicle_HPP__

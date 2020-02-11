@@ -31,6 +31,29 @@ void LaunchVehicle::init(AbstractImu* i, AbstractAltimeter* a)
     if (VERBOSE) { Serial.println("Vehicle init complete"); }
 }
 
+void LaunchVehicle::init(bool use_mocked_sensors)
+{
+    if (use_mocked_sensors)
+    {
+        if (VERBOSE) { Serial.println("MANUAL MODE: Using mocked sensors"); }
+        MockHelper mockHelper(LOGFILE);
+        mockHelper.init();
+
+        MockImu mock_imu(mockHelper);
+        MockAltimeter mock_altimeter(mockHelper);
+
+        init(&mock_imu, &mock_altimeter);
+    }
+    else
+    {
+        if (VERBOSE) { Serial.println("AUTOMATIC MODE: Using real sensors"); }
+        IMU imu;
+        Altimeter altimeter;
+
+        init(&imu, &altimeter);
+    }
+}
+
 bool LaunchVehicle::launchDetected()
 {
    return false;
@@ -41,18 +64,20 @@ bool LaunchVehicle::motorBurnoutDetected()
     bool ret = false;
 
     // Three checks for motor burnout to be detected: 
-    // (1) A certain amount of time has passed (burn time of motor), AND
-    // (2) Altitude is greater than expected motor burnout altitude, AND
-    // (3) Vehicle is no longer accelerating up/
+    // (1) A certain amount of time has passed (burn time of motor), AND    // Maybe don't use this (collects less data) -Matt
+    // (3) Vehicle is no longer accelerating up // Focus on this one -everyone
+
+    // Ask sims people to update simulation with new surface area -everyone
 
     // check for decrease in acceleration 
     Data before = readFromSensors();
     delay(50);
     Data after = readFromSensors();
-    if(VERBOSE) { Serial.printf("Time: %d, Accel_z: %.5f, Alt: %.5f, accelCounter: %d\n", before.timestamp, before.imuData.acceleration_z, before.altimeterData.altitude); }
-    bool criteria_3 = (before.imuData.acceleration_z < after.imuData.acceleration_z);
 
-    ret = criteria_3;
+    if(VERBOSE) { Serial.printf("Time: %d, Accel_z: %.5f, Alt: %.5f, accelCounter: %d\n", before.timestamp, before.imuData.acceleration_z, before.altimeterData.altitude); }
+
+    // z-axis is "up" axis
+    ret = (before.imuData.acceleration_z < after.imuData.acceleration_z); // Maybe rolling average -Patrick
         
     if (ret)
     {
@@ -182,12 +207,11 @@ bool LaunchVehicle::meetsDaqHeightThreshold(float current_altitude)
 bool LaunchVehicle::meetsDaqDataPointThreshold(int points_read_since_burnout)
 {
     bool ret = false;
-
     ret = (points_read_since_burnout >= DAQ_THRESHOLD_DATA_POINTS);
-
     return ret;
 }
 
+// check with dan about simulator model -Patrick
 void LaunchVehicle::polyFit(std::vector<float> &x, std::vector<float> &y, std::vector<float> &coeffs)
 {
     if (x.size() != y.size())

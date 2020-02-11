@@ -1,6 +1,6 @@
 #ifdef FLIGHT_BUILD // constants for flight build
 
-    #define MOTOR_STEPS 200
+    #define STEPS_FOR_100_PERCENT 200
     #define RPM 120
     #define MICROSTEPS 1
 
@@ -99,7 +99,7 @@
    
 #else       // constants for test build
     
-    #define MOTOR_STEPS 200
+    #define STEPS_FOR_100_PERCENT 60
     #define RPM 120
     #define MICROSTEPS 1
 
@@ -194,5 +194,5 @@
      * Amount of time to wait between main states.                                   Unit: milliseconds
      * Lower wait times mean faster state transitions. This should be high for testing, low for flight.
     **************************************************************************************************/
-    #define STATE_DELAY 50
+    #define STATE_DELAY 20
 #endif

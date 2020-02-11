@@ -2,7 +2,7 @@
 
 Airbrake::Airbrake():
     deployment_percentage(0),
-    motor(MOTOR_STEPS, M_DIR, M_STEP)
+    motor(STEPS_FOR_100_PERCENT, M_DIR, M_STEP)
 {
 
 }
@@ -18,27 +18,33 @@ void Airbrake::init()
     motor.begin(RPM, MICROSTEPS);
 }
 
+// Negative motor steps yields CCW when looking at motor -- this deploys blades
+// Positive motor steps yields CW when looking at motor  -- this retracts blades
 void Airbrake::setAbsoluteDeployment(int percent)
 {
-    Serial.println("running backward");
-    // TODO: Implement
-    deployment_percentage = percent;
+    float difference = (float)percent - (float)deployment_percentage;
 
-    // Negative motor steps yields CCW when looking at motor
-    // Positive motor steps yields CW when looking at motor
+    Serial.printf("Deployment percentage: %lf\n", deployment_percentage);
+    Serial.printf("Commanded percentage: %lf\n", percent);
 
-    motor.move(MOTOR_STEPS * MICROSTEPS * (percent/100.00));
+    Serial.printf("Difference: %lf\n", difference);
+
+    deployment_percentage = difference;
+
+    float steps = -(STEPS_FOR_100_PERCENT * MICROSTEPS * (float)(difference/100.0));
+
+    Serial.printf("Steps: %f\n", steps);
+
+    motor.move(steps);
 }
 
 void Airbrake::deployCompletely()
 {
-    deployment_percentage = 100;
     setAbsoluteDeployment(100);
 }
 
 void Airbrake::retractCompletely()
 {
-    deployment_percentage = 0;
     setAbsoluteDeployment(0);
 }
 

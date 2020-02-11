@@ -89,7 +89,7 @@ void Altimeter::disable()
 
 void Altimeter::setBaselinePressure()
 {
-    initAlt = bmp.readPressure();
+    initAlt = bmp.readPressure();   // patrick will fix this from subscale -patrick
 }
 
 uint64_t Altimeter::getNumDataPoints()

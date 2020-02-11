@@ -38,7 +38,7 @@ void MockAltimeter::enable() { }
 
 void MockAltimeter::disable() { }
 
-void MockAltimeter::setBaselinePressure() { }
+void MockAltimeter::setBaselinePressure() { } // todo fix
 
 uint64_t MockAltimeter::getNumDataPoints()
 {
