@@ -28,30 +28,7 @@ void setup()
 
     state = START;
 
-    if (MANUAL_MODE)
-    {
-        if (VERBOSE) { Serial.println("MANUAL MODE: Using mocked sensors"); }
-        
-        // Set up mock sensors
-        MockHelper mockHelper(LOGFILE);
-        mockHelper.init();
-    
-        // Initialize mocked sensors
-        MockImu imu(mockHelper);
-        MockAltimeter altimeter(mockHelper);
-
-        vehicle.init(&imu, &altimeter); // Consider moving to LaunchVehicle's init -Patrick
-    }
-    else
-    {
-        if (VERBOSE) { Serial.println("AUTOMATIC MODE: Using real sensors"); }
-
-        // Initialize real sensors
-        IMU imu;
-        Altimeter altimeter; // Consider moving to LaunchVehicle's init -Patrick
-
-        vehicle.init(&imu, &altimeter);
-    }    
+    vehicle.init(MANUAL_MODE); 
 
     airbrake.init();
 }

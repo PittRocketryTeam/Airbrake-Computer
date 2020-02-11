@@ -25,14 +25,14 @@ class LaunchVehicle
         LaunchVehicle();
         ~LaunchVehicle();
 
-        /******************************************************************************************
-         * Initialize vehicle and sensors. Accepts an IMU and Altimeter objects so these sensors
-         * can be mocked.
+         /******************************************************************************************
+         * Initialize vehicle and sensors. Accepts a boolean parameter to determine whether or not 
+         * to use mocked sensors. 
          * 
-         * @param AbstractImu imu object (or mock)
-         * @param AbstractAltimeter altimeter object (or mock)
+         * @param use_mocked_sensors if true, LaunchVehicle will use mocked sensors, otherwise will
+         * use real sensors
          *****************************************************************************************/
-        void init(AbstractImu* i, AbstractAltimeter* a);
+        void init(bool use_mocked_sensors);
         
         /******************************************************************************************
          * SA-1: Launch Detection Sub-Algorithm
@@ -196,6 +196,15 @@ class LaunchVehicle
          * @return bool true if the rocket is on the pad, false otherwise
          *****************************************************************************************/
         bool onPad();
+
+        /******************************************************************************************
+         * Initialize vehicle and sensors. Accepts an IMU and Altimeter objects so these sensors
+         * can be mocked.
+         * 
+         * @param AbstractImu imu object (or mock)
+         * @param AbstractAltimeter altimeter object (or mock)
+         *****************************************************************************************/
+        void init(AbstractImu* i, AbstractAltimeter* a);
 
         AbstractImu* imu;
         AbstractAltimeter* altimeter;

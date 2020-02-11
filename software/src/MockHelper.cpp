@@ -68,5 +68,16 @@ void MockHelper::init()
 
 Data MockHelper::getNextDataPoint(Data data)
 {
-    return mock_data[data_index++];
+    if (data_index < k_rows) 
+    {
+        Serial.printf("data index: %d\n", data_index);
+        return mock_data[data_index++];
+    }
+    else
+    {
+        Serial.printf("out of data\n");
+        return data;
+    }
+    
+    
 }

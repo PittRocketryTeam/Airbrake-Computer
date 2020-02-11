@@ -31,9 +31,35 @@ void LaunchVehicle::init(AbstractImu* i, AbstractAltimeter* a)
     if (VERBOSE) { Serial.println("Vehicle init complete"); }
 }
 
+void LaunchVehicle::init(bool use_mocked_sensors)
+{
+    if (use_mocked_sensors)
+    {
+        if (VERBOSE) { Serial.println("MANUAL MODE: Using mocked sensors"); }
+        MockHelper mockHelper(LOGFILE);
+        mockHelper.init();
+
+        MockImu mock_imu(mockHelper);
+        MockAltimeter mock_altimeter(mockHelper);
+
+        init(&mock_imu, &mock_altimeter);
+    }
+    else
+    {
+        if (VERBOSE) { Serial.println("AUTOMATIC MODE: Using real sensors"); }
+        IMU imu;
+        Altimeter altimeter;
+
+        init(&imu, &altimeter);
+    }
+}
+
 bool LaunchVehicle::launchDetected()
 {
     bool ret = false;
+
+    Data data = readFromSensors();
+    Serial.printf("timestamp: %ld, altitude: %lf\n", data.timestamp, data.altimeterData.altitude);
 
     // TODO: Implement
 
