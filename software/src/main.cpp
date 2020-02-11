@@ -1,10 +1,11 @@
 #include <Arduino.h>
 
 #include "Airbrake_State.hpp"
+
 #include "LaunchVehicle.hpp"
 #include "Airbrake.hpp"
-#include "SdFat.h"
-#include "MockHelper.hpp"
+#include "Logger.hpp"
+#include "Timer.hpp"
 
 /*********************************************** Functions ***************************************/
 bool manualSkipState(void);
@@ -16,6 +17,8 @@ void loop(void);
 LaunchVehicle vehicle;  // Makes decisions about the state of the vehicle based on sensor data
 Airbrake airbrake;      // Actuates the air brake and interacts with air brake hardware
 Airbrake_State state;   // Keeps track of current state in FSM
+Logger logger;          // Performs data and event logging
+Timer log_flush;
 /*************************************************************************************************/
 
 /**************************************************************************************************
@@ -24,13 +27,16 @@ Airbrake_State state;   // Keeps track of current state in FSM
 void setup() 
 {
     delay(4000);
-    if (VERBOSE) { Serial.println("In setup"); }
 
     state = START;
 
     vehicle.init(MANUAL_MODE); 
 
     airbrake.init();
+
+    // Logger inialization
+    logger.init();
+    log_flush.setInterval(1000);
 }
 /**************************************************************************************************
  * State machine loop

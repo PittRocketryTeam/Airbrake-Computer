@@ -187,8 +187,6 @@ class LaunchVehicle
          *****************************************************************************************/
         float findGlobalMax(std::vector<float> &coeffs);
 
-        static time_t getTeensy3Time();
-
         /******************************************************************************************
          * Determines whether the rocket has been placed on the pad or not. This will aid data and
          * power management.

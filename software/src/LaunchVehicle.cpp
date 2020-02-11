@@ -23,11 +23,6 @@ void LaunchVehicle::init(AbstractImu* i, AbstractAltimeter* a)
     imu->init();
     delay(1000);
 
-    // Initialize RTC
-    setSyncProvider(getTeensy3Time);
-    delay(100);
-    RTC_set_successfully = (timeStatus() == timeSet);
-
     if (VERBOSE) { Serial.println("Vehicle init complete"); }
 }
 
@@ -337,9 +332,4 @@ float LaunchVehicle::findGlobalMax(std::vector<float> &coeffs)
     global_max = c + (b * global_max_x) + (a * global_max_x * global_max_x);
 
     return global_max;
-}
-
-static time_t LaunchVehicle::getTeensy3Time()
-{
-    return Teensy3Clock.get();
 }
