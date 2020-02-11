@@ -99,7 +99,7 @@
    
 #else       // constants for test build
     
-    #define STEPS_FOR_100_PERCENT 200
+    #define STEPS_FOR_100_PERCENT 60
     #define RPM 120
     #define MICROSTEPS 1
 

@@ -19,21 +19,29 @@ void Airbrake::init()
 
 void Airbrake::setAbsoluteDeployment(int percent)
 {
-    // TODO: Implement
-    deployment_percentage = percent;
+    float difference = (float)percent - (float)deployment_percentage;
 
-    motor.move(STEPS_FOR_100_PERCENT * MICROSTEPS * (percent/100));
+    Serial.printf("Deployment percentage: %lf\n", deployment_percentage);
+    Serial.printf("Commanded percentage: %lf\n", percent);
+
+    Serial.printf("Difference: %lf\n", difference);
+
+    deployment_percentage = difference;
+
+    float steps = -(STEPS_FOR_100_PERCENT * MICROSTEPS * (float)(difference/100.0));
+
+    Serial.printf("Steps: %f\n", steps);
+
+    motor.move(steps);
 }
 
 void Airbrake::deployCompletely()
 {
-    deployment_percentage = 100;
     setAbsoluteDeployment(100);
 }
 
 void Airbrake::retractCompletely()
 {
-    deployment_percentage = 0;
     setAbsoluteDeployment(0);
 }
 
