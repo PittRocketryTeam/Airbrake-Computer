@@ -9,8 +9,7 @@
 #include "SdFat.h"
 #include "TimeLib.h"
 #include "board.hpp"
-
-#define MAX_SENSORS 20
+#include "constants.hpp"
 
 class Logger
 {
@@ -83,6 +82,7 @@ class Logger
          * Logfile name.
         */
         char filename[128];
+
         char buffer[1000];
         File32 handle;
 };

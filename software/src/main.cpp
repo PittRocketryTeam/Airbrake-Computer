@@ -28,15 +28,16 @@ void setup()
 {
     delay(4000);
 
-    state = START;
-
-    vehicle.init(MANUAL_MODE); 
+    vehicle.init(&logger); 
 
     airbrake.init();
 
     // Logger inialization
     logger.init();
     log_flush.setInterval(1000);
+
+    state = START;
+    logger.logEvent((char*)"State: START");
 }
 /**************************************************************************************************
  * State machine loop
@@ -44,7 +45,12 @@ void setup()
 void loop() 
 {
     delay(STATE_DELAY);
-    
+
+    if (log_flush.check())
+    {
+        logger.flush();
+    }
+        
     switch (state)
     {
         case START:
@@ -53,6 +59,7 @@ void loop()
 
             if (vehicle.launchDetected())       // Check if launch has been detected 
             {
+                logger.logEvent((char*)"State: LAUNCH_DETECTED");
                 state = LAUNCH_DETECTED;
             }
 
@@ -64,6 +71,7 @@ void loop()
 
             if (vehicle.motorBurnoutDetected()) // Check if motor burnout has been detected
             {
+                logger.logEvent((char*)"State: BURNOUT_DETECTED");
                 state = BURNOUT_DETECTED;
             }
 
@@ -75,6 +83,7 @@ void loop()
 
             if (vehicle.daqThresholdMet())     // Check if data acquisition threshold has been met
             {
+                logger.logEvent((char*)"State: DAQ_THRESHOLD_MET_ACTIVE_ADJUST");
                 state = DAQ_THRESHOLD_MET_ACTIVE_ADJUST;
             }
 
@@ -86,7 +95,7 @@ void loop()
 
             if (vehicle.descentDetected()) // Check for descent
             {
-                // if (VERBOSE) { Seria}
+                logger.logEvent((char*)"State: DESCENT_DETECTED");
                 state = DESCENT_DETECTED;
                 break;
             }
@@ -99,6 +108,7 @@ void loop()
                     // Wait until descent is detected
                 } 
                 state = DESCENT_DETECTED;     // Switch to descent detected state
+                logger.logEvent((char*)"State: DESCENT_DETECTED");
                 break;
             }
 
@@ -118,6 +128,7 @@ void loop()
 
             airbrake.retractCompletely(); // Retract to 0%
             state = TERMINATION;          // Terminate
+            logger.logEvent((char*)"State: TERMINATION");
 
             break;
 

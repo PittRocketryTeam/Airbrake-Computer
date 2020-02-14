@@ -26,12 +26,14 @@ void LaunchVehicle::init(AbstractImu* i, AbstractAltimeter* a)
     if (VERBOSE) { Serial.println("Vehicle init complete"); }
 }
 
-void LaunchVehicle::init(bool use_mocked_sensors)
-{
-    if (use_mocked_sensors)
+void LaunchVehicle::init(Logger* logger)
+{   
+    // Initialize with mocked sensors
+    if (MANUAL_MODE)
     {
         if (VERBOSE) { Serial.println("MANUAL MODE: Using mocked sensors"); }
-        MockHelper mockHelper(LOGFILE);
+
+        MockHelper mockHelper(MOCKED_DATA_LOGFILE);
         mockHelper.init();
 
         MockImu mock_imu(mockHelper);
@@ -39,19 +41,44 @@ void LaunchVehicle::init(bool use_mocked_sensors)
 
         init(&mock_imu, &mock_altimeter);
     }
+    // Initialize with real sensors
     else
     {
         if (VERBOSE) { Serial.println("AUTOMATIC MODE: Using real sensors"); }
-        IMU imu;
-        Altimeter altimeter;
 
-        init(&imu, &altimeter);
+        IMU i;
+        Altimeter a;
+
+        init(&i, &a);
+    }
+
+    // Add imu and altimeter to logger
+    if (logger != NULL)
+    {
+        logger->addSensor((Sensor*)imu);
+        logger->addSensor((Sensor*)altimeter);
     }
 }
 
 bool LaunchVehicle::launchDetected()
 {
-   return false;
+    // comments need to be < 100 characters long -rachel
+    //typical launch acceleration from our motor is -39.93. Ocurrs at 309 in loggylog.csv from december (col H is acceleration, col D is altitude)
+        //if acceleration constant and over around 35m/s^2 for a short period of time (5 cycles), then proceed
+    //after accel, look at altitude. Keep a mean, if new data is over mean by a certain amount == launched
+        //maybe look to detect the initial subbtle up and down of the data (best option?) -- best for everything else
+        //maybe you keep track of altitude during accel, see the big jump while checking for conintuity there? -- best for air brake
+    //for(data = readFromSensors(data); data.altimeterData.altitude < 100.00; data = readFromSensors(data))//while under 100 meters -- 100 meters is the fail safe, if haven't detect launch by now, we're certainly lanuching
+    Data data = readFromSensors();
+
+    if(VERBOSE) { Serial.printf("Time: %d, Alt: %.5f\n", data.timestamp, data.altimeterData.altitude); }
+    
+    if (data.altimeterData.altitude < 100.00)//if the rocket is above 100m, assume it's launched already
+    {
+        if (VERBOSE) { Serial.println("Launch Detected at 100m"); }
+        return true;
+    }   
+    return false;
 }
 
 bool LaunchVehicle::motorBurnoutDetected()
@@ -69,7 +96,7 @@ bool LaunchVehicle::motorBurnoutDetected()
     delay(50);
     Data after = readFromSensors();
 
-    if(VERBOSE) { Serial.printf("Time: %d, Accel_z: %.5f, Alt: %.5f, accelCounter: %d\n", before.timestamp, before.imuData.acceleration_z, before.altimeterData.altitude); }
+    // if(VERBOSE) { Serial.printf("Time: %d, Accel_z: %.5f, Alt: %.5f, accelCounter: %d\n", before.timestamp, before.imuData.acceleration_z, before.altimeterData.altitude); }
 
     // z-axis is "up" axis
     ret = (before.imuData.acceleration_z < after.imuData.acceleration_z); // Maybe rolling average -Patrick

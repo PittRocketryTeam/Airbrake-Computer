@@ -18,6 +18,9 @@
 #include "MockImu.hpp"
 #include "MockAltimeter.hpp"
 
+#include "Logger.hpp"
+#include "Sensor.hpp"
+
 class LaunchVehicle
 {
     public:
@@ -29,10 +32,9 @@ class LaunchVehicle
          * Initialize vehicle and sensors. Accepts a boolean parameter to determine whether or not 
          * to use mocked sensors. 
          * 
-         * @param use_mocked_sensors if true, LaunchVehicle will use mocked sensors, otherwise will
-         * use real sensors
+         * @param logger to use for event logging
          *****************************************************************************************/
-        void init(bool use_mocked_sensors);
+        void init(Logger* logger);
         
         /******************************************************************************************
          * SA-1: Launch Detection Sub-Algorithm

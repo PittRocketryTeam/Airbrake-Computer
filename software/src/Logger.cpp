@@ -68,7 +68,7 @@ void Logger::generateFilename()
     current_time = now();
     if (RTC_set_successfully)
     {
-        sprintf(filename, "%d-%d-%d_%d-%d-%d.csv", 
+        sprintf(filename, "%d-%d-%d_%d-%d-%d-AIRBRAKE.csv", 
                 month(current_time),
                 day(current_time),
                 year(current_time),
@@ -79,7 +79,7 @@ void Logger::generateFilename()
     }
     else
     {
-        sprintf(filename, "loggylog.csv");
+        sprintf(filename, "loggylog-AIRBRAKE.csv");
     }
 
 }
@@ -87,15 +87,31 @@ void Logger::generateFilename()
 Data Logger::readDataFromSensors()
 {
     Data data;
-    int i;
-    for (i = 0; i < num_sensors; ++i)
-    {
-        data = sensors[i]->read(data);
-    }
 
+    if (MANUAL_MODE)
+    {
+        // For mocked data, only read from one sensor to avoid duplicate reads
+        data = sensors[0]->read(data);
+    }
+    else
+    {
+        int i;
+        for (i = 0; i < num_sensors; ++i)
+        {
+            data = sensors[i]->read(data);
+        }
+    }
+    
     // Add timestamp
     current_time = millis();
-    data.timestamp = (long int)current_time;  
+    data.timestamp = (long int)current_time;
+
+    if (VERBOSE) 
+    { 
+        Serial.printf("Logger::readDataFromSensors - timestamp: %ld, alt: %f\n", 
+            data.timestamp,
+            data.altimeterData.altitude); 
+    }
     return data;                        
 }
 
